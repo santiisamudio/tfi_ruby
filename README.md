@@ -15,7 +15,6 @@ El catálogo de crípticos se sincroniza desde una API JSON.
 - Node.js 26.13.0 y Yarn 1.22
 - Git
 
-En Windows, todo se instala y se corre dentro de Ubuntu con WSL2, y el proyecto se clona en la carpeta de Linux (no en `/mnt/c`).
 
 ## Clonar y levantar el proyecto
 
@@ -57,9 +56,4 @@ Instala las gemas y paquetes nuevos y aplica las migraciones pendientes.
 | `bin/rails test` | Corre los tests |
 | `bin/rubocop` | Revisa el estilo del código |
 
-## Usuario administrador
 
-Al preparar la base se crea un administrador para entrar al backend en http://localhost:3000/admin:
-
-- Email: `admin@rubipticos.com`
-- Contraseña: `password`
