@@ -1,0 +1,14 @@
+es:
+  activerecord:
+    models:
+      player:
+        one: Jugador
+        other: Jugadores
+    attributes:
+      player:
+        name: Nombre
+        normalized_name: Nombre
+        blocked_at: Bloqueado el
+        current_streak: Racha actual
+        best_streak: Mejor racha
+        last_streak_on: Último día de la racha
