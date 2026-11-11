@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Zilla+Slab:wght@500;600;700&display=swap");
 
 .player-module,
-.chatbot {
+.chatbot,
+.flash {
   --pm-ruby: #a3112e;
   --pm-ruby-deep: #7d0c22;
   --pm-ink: #1f1d24;
@@ -70,6 +71,30 @@
     border-top: 2px solid var(--pm-ink);
     opacity: 1;
   }
+}
+
+.alert.flash {
+  --bs-alert-padding-x: 1rem;
+  --bs-alert-padding-y: 0.75rem;
+  --bs-alert-border-radius: 0.25rem;
+  --bs-alert-border: 2px solid var(--bs-alert-border-color);
+  max-width: 46rem;
+  font-family: var(--pm-font-text);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+
+.alert.flash--notice {
+  --bs-alert-bg: var(--pm-marker);
+  --bs-alert-color: var(--pm-ink);
+  --bs-alert-border-color: var(--pm-ink);
+}
+
+.alert.flash--alert {
+  --bs-alert-bg: var(--pm-paper);
+  --bs-alert-color: var(--pm-ruby);
+  --bs-alert-border-color: var(--pm-ruby);
+  font-weight: 700;
 }
 
 .player-module .lead-sentence {

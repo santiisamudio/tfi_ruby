@@ -5,7 +5,7 @@
     <%= form.label :name, class: "form-label" %>
     <%= form.text_field :name, class: ["form-control", ("is-invalid" if player.errors.any?)],
           required: true, minlength: Player::NAME_LENGTH.min, maxlength: Player::NAME_LENGTH.max,
-          autofocus: true, autocomplete: "off", aria: { describedby: "name-help" },
+          autofocus: true, autocomplete: "off",
           data: { name_tiles_target: "input", action: "name-tiles#render" } %>
 
     <% player.errors.full_messages.each do |message| %>
@@ -20,10 +20,6 @@
                 data-action="name-tiles#use" data-name-tiles-name-param="<%= suggestion %>">Usar <%= suggestion %></button>
       </div>
     <% end %>
-
-    <div id="name-help" class="form-text">
-      Entre <%= Player::NAME_LENGTH.min %> y <%= Player::NAME_LENGTH.max %> caracteres, y distinto del de otro jugador aunque cambien las mayúsculas.
-    </div>
   </div>
 
   <%= form.submit submit_label, class: "btn btn-primary" %>

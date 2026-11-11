@@ -33,7 +33,7 @@ class PlayersController < ApplicationController
 
   def destroy
     forget_current_player
-    redirect_to new_player_path, notice: "Empezaste como otro jugador. Elegí su nombre.", status: :see_other
+    redirect_to new_player_path, flash: { started_over: true }, status: :see_other
   end
 
   private
