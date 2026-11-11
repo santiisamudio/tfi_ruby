@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <title><%= content_for(:title) || "Rubipticos" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,6 +24,13 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render "layouts/navbar" %>
+
+    <main class="container py-4">
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
+
+    <%= render "shared/how_to_play_button" %>
   </body>
 </html>

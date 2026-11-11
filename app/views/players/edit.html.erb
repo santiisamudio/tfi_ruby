@@ -1,0 +1,27 @@
+<% content_for :title, "Tu jugador | Rubípticos" %>
+
+<div class="player-module">
+  <h1>Tu jugador</h1>
+
+  <% if @player.blocked? %>
+    <%= render "players/tiles", text: current_player.name, minimum: 0 %>
+    <p class="lead-sentence">Un administrador bloqueó este nombre.</p>
+    <p>Mientras siga bloqueado no podés jugar ni cambiarlo. Para seguir jugando, empezá como otro jugador.</p>
+  <% else %>
+    <p>Tus partidas, tu racha y tus puntos son del jugador, no del nombre: si lo cambiás, se conservan.</p>
+    <%= render "form", player: @player, submit_label: "Guardar el nombre" %>
+  <% end %>
+
+  <hr>
+
+  <h2>Empezar como otro jugador</h2>
+  <p>
+    Vas a dejar de ser <strong><%= current_player.name %></strong> en este navegador y vas a empezar de cero, con un jugador nuevo.
+  </p>
+  <p>
+    <strong>Este jugador no se puede recuperar.</strong> Su historial queda guardado y sigue contando en la tabla de posiciones,
+    pero nadie va a poder volver a jugar con él.
+  </p>
+  <%= button_to "Empezar como otro jugador", player_path, method: :delete, class: "btn btn-outline-danger",
+        form: { data: { turbo_confirm: "¿Empezar como otro jugador? Vas a perder para siempre el acceso a #{current_player.name}." } } %>
+</div>

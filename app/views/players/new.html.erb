@@ -1,0 +1,12 @@
+<% content_for :title, "Elegí tu nombre | Rubípticos" %>
+
+<div class="player-module">
+  <h1>Elegí tu nombre</h1>
+  <p>No hace falta cuenta ni contraseña: con un nombre alcanza.</p>
+
+  <%= render "form", player: @player, submit_label: "Jugar con este nombre" %>
+
+  <p class="quiet mt-4">
+    Este navegador recuerda tu jugador con una cookie. Si la borrás, perdés el acceso y empezás de cero.
+  </p>
+</div>

@@ -1,0 +1,14 @@
+<% letters = text.to_s.strip.chars %>
+<div class="tile-row" aria-hidden="true" data-name-tiles-target="row">
+  <% letters.each do |letter| %>
+    <% if letter == " " %>
+      <span class="tile tile--block"></span>
+    <% else %>
+      <span class="tile"><%= letter %></span>
+    <% end %>
+  <% end %>
+  <% (minimum - letters.size).times do %>
+    <span class="tile tile--empty"></span>
+  <% end %>
+  <span class="tile-row__enumeration"><%= enumeration(text) %></span>
+</div>

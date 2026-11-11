@@ -1,0 +1,34 @@
+<% content_for :title, "Mi racha | Rubípticos" %>
+
+<div class="player-module">
+  <h1>Mi racha</h1>
+
+  <p class="lead-sentence">
+    <% if @player.streak_counted_today? %>
+      Llevás <%= days_count(@player.active_streak) %> de racha, y hoy ya cuenta.
+    <% elsif @player.streak_alive? %>
+      Llevás <%= days_count(@player.active_streak) %> de racha. Resolvé un críptico hoy para no cortarla.
+    <% else %>
+      No tenés una racha activa. Resolvé un críptico hoy para empezar una.
+    <% end %>
+  </p>
+
+  <%= render "streaks/tiles", player: @player %>
+
+  <% unless @player.streak_counted_today? %>
+    <p><%= link_to "Jugar", root_path, class: "btn btn-primary" %></p>
+  <% end %>
+
+  <dl class="definitions">
+    <div>
+      <dt>Mejor racha</dt>
+      <dd><%= days_count(@player.best_streak) %></dd>
+    </div>
+    <% if @player.last_streak_on %>
+      <div>
+        <dt>Último día resuelto</dt>
+        <dd><%= l(@player.last_streak_on, format: :long) %></dd>
+      </div>
+    <% end %>
+  </dl>
+</div>

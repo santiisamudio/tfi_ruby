@@ -1,0 +1,19 @@
+<% today = Date.current %>
+<% dates = player.streak_dates(today) %>
+<% shown_dates = dates.last(StreaksHelper::STREAK_TILES_LIMIT) %>
+<div class="tile-row tile-row--days" aria-hidden="true">
+  <% if dates.size > shown_dates.size %>
+    <span class="tile-row__more">+<%= dates.size - shown_dates.size %></span>
+  <% end %>
+  <% shown_dates.each do |date| %>
+    <span class="<%= date == today ? "tile tile--today" : "tile" %>">
+      <span class="tile__number"><%= date.day %></span>
+      <%= l(date, format: "%a").first %>
+    </span>
+  <% end %>
+  <% unless player.streak_counted_today?(today) %>
+    <span class="tile tile--pending">
+      <span class="tile__number"><%= today.day %></span>
+    </span>
+  <% end %>
+</div>
