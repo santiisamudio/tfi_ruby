@@ -1,9 +1,18 @@
 class ApplicationController < ActionController::Base
   include Authentication
   include PlayerIdentification
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-
-  # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
+
+  private
+
+  def require_admin
+    redirect_to root_path, alert: "No tenés permisos para acceder." unless Current.user&.admin?
+  end
+
+  def require_admin_or_editor
+    redirect_to root_path, alert: "No tenés permisos para acceder." unless Current.user&.role.in?(User::ROLES)
+  end
 end
+
+

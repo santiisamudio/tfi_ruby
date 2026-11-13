@@ -3,4 +3,16 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  ROLES = %w[admin editor].freeze
+
+  validates :role, inclusion: { in: ROLES }
+
+  def admin?
+    role == "admin"
+  end
+
+  def editor?
+    role == "editor"
+  end
 end
