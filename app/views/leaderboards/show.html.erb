@@ -1,0 +1,42 @@
+<% content_for :title, "Tabla de posiciones | Rubípticos" %>
+
+<div class="player-module">
+  <h1>Tabla de posiciones</h1>
+
+  <ul class="tabs">
+    <li><span class="tabs__item tabs__item--disabled" aria-disabled="true">Esta semana</span></li>
+    <li><span class="tabs__item tabs__item--disabled" aria-disabled="true">Histórico</span></li>
+    <li><span class="tabs__item tabs__item--active" aria-current="page">Mejores rachas</span></li>
+  </ul>
+
+  <% if @players.empty? %>
+    <p class="mt-4">Nadie tiene una racha activa todavía. Resolvé un críptico hoy y la tabla arranca con vos.</p>
+  <% else %>
+    <div class="table-responsive">
+      <table class="table leaderboard align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="position">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Racha actual</th>
+            <th scope="col">Racha más alta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @players.each_with_index do |player, index| %>
+            <%= render "leaderboards/row", player: player, position: index + 1 %>
+          <% end %>
+        </tbody>
+        <% if @current_player_position && !@players.include?(current_player) %>
+          <tfoot>
+            <%= render "leaderboards/row", player: current_player, position: @current_player_position %>
+          </tfoot>
+        <% end %>
+      </table>
+    </div>
+
+    <% if current_player && !current_player.blocked? && @current_player_position.nil? %>
+      <p class="quiet">Todavía no tenés una racha activa: resolvé un críptico hoy para entrar en esta tabla.</p>
+    <% end %>
+  <% end %>
+</div>

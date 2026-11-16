@@ -1,0 +1,37 @@
+pedrito:
+  name: Pedrito
+  normalized_name: pedrito
+  token: pedrito-token-000000001
+  current_streak: 3
+  best_streak: 5
+  last_streak_on: <%= Date.current.yesterday %>
+
+angela:
+  name: Ángela
+  normalized_name: ángela
+  token: angela-token-0000000002
+  current_streak: 4
+  best_streak: 4
+  last_streak_on: <%= Date.current %>
+
+lucia:
+  name: Lucía
+  normalized_name: lucía
+  token: lucia-token-00000000003
+  current_streak: 7
+  best_streak: 7
+  last_streak_on: <%= 5.days.ago.to_date %>
+
+blocked:
+  name: Bloqueado
+  normalized_name: bloqueado
+  token: blocked-token-000000004
+  blocked_at: <%= 1.day.ago %>
+  current_streak: 10
+  best_streak: 10
+  last_streak_on: <%= Date.current %>
+
+newbie:
+  name: Novato
+  normalized_name: novato
+  token: newbie-token-0000000005

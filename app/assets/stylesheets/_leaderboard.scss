@@ -1,0 +1,67 @@
+.player-module .tile--badge {
+  --pm-cell: 2rem;
+  border-color: var(--pm-ruby);
+  background: var(--pm-ruby);
+  color: var(--pm-paper);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+
+.player-module .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  border-bottom: 2px solid var(--pm-ink);
+  list-style: none;
+}
+
+.player-module .tabs__item {
+  display: block;
+  margin-bottom: -2px;
+  padding: 0.5rem 0;
+  border-bottom: 4px solid transparent;
+  color: var(--pm-ink);
+  font-weight: 700;
+}
+
+.player-module .tabs__item--active {
+  border-bottom-color: var(--pm-ruby);
+}
+
+.player-module .tabs__item--disabled {
+  color: var(--pm-graphite);
+  font-weight: 400;
+}
+
+.player-module .leaderboard {
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--pm-rule);
+  margin-top: 0.5rem;
+  font-variant-numeric: tabular-nums;
+
+  th {
+    color: var(--pm-graphite);
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .position {
+    width: 3rem;
+    padding-right: 1rem;
+    font-family: var(--pm-font-display);
+    font-weight: 700;
+    text-align: right;
+  }
+
+  tr.is-current > * {
+    --bs-table-bg-state: var(--pm-marker);
+    font-weight: 700;
+  }
+
+  tfoot tr:first-child > * {
+    border-top: 2px solid var(--pm-ink);
+  }
+}

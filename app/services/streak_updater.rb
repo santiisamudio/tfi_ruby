@@ -1,4 +1,8 @@
 class StreakUpdater
+  def self.call(player:, today: Date.current)
+    new(player, today).call
+  end
+
   def initialize(player, today = Date.current)
     @player = player
     @today = today

@@ -15,7 +15,7 @@
           <%= link_to "Mi racha", streak_path, class: ["nav-link", ("active" if controller_name == "streaks")] %>
         </li>
         <li class="nav-item">
-          <span class="nav-link" aria-disabled="true">Tabla de posiciones</span>
+          <%= link_to "Tabla de posiciones", leaderboard_path, class: ["nav-link", ("active" if controller_name == "leaderboards")] %>
         </li>
       </ul>
 

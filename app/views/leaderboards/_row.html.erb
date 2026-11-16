@@ -1,0 +1,12 @@
+<tr class="<%= "is-current" if player == current_player %>">
+  <td class="position"><%= position %></td>
+  <td><%= player.name %></td>
+  <td><%= days_count(player.current_streak) %></td>
+  <td>
+    <% if player.best_streak > 0 %>
+      <span class="tile tile--badge" title="Racha más alta: <%= days_count(player.best_streak) %>">
+        <%= player.best_streak %><span class="visually-hidden"><%= player.best_streak == 1 ? " día" : " días" %></span>
+      </span>
+    <% end %>
+  </td>
+</tr>
