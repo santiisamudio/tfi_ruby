@@ -10,7 +10,7 @@
   </ul>
 
   <% if @players.empty? %>
-    <p class="mt-4">Nadie tiene una racha activa todavía. Resolvé un críptico hoy y la tabla arranca con vos.</p>
+    <p class="mt-4">Nadie tiene una racha activa todavía.</p>
   <% else %>
     <div class="table-responsive">
       <table class="table leaderboard align-middle">
@@ -18,6 +18,10 @@
           <tr>
             <th scope="col" class="position">#</th>
             <th scope="col">Nombre</th>
+            <th scope="col">Puntos</th>
+            <th scope="col">Resueltos</th>
+            <th scope="col">Tiempo promedio</th>
+            <th scope="col">% sin pistas</th>
             <th scope="col">Racha actual</th>
             <th scope="col">Racha más alta</th>
           </tr>
@@ -35,8 +39,6 @@
       </table>
     </div>
 
-    <% if current_player && !current_player.blocked? && @current_player_position.nil? %>
-      <p class="quiet">Todavía no tenés una racha activa: resolvé un críptico hoy para entrar en esta tabla.</p>
-    <% end %>
+    
   <% end %>
 </div>

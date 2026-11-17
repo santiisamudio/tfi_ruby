@@ -1,6 +1,17 @@
 <tr class="<%= "is-current" if player == current_player %>">
-  <td class="position"><%= position %></td>
+  <td class="position">
+    <% medal = medal_for(position) %>
+    <% if medal %>
+      <span class="tile tile--medal tile--<%= medal %>"><%= position %></span>
+    <% else %>
+      <%= position %>
+    <% end %>
+  </td>
   <td><%= player.name %></td>
+  <%= render "leaderboards/no_data" %>
+  <%= render "leaderboards/no_data" %>
+  <%= render "leaderboards/no_data" %>
+  <%= render "leaderboards/no_data" %>
   <td><%= days_count(player.current_streak) %></td>
   <td>
     <% if player.best_streak > 0 %>

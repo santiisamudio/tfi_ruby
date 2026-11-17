@@ -7,6 +7,25 @@
   font-variant-numeric: tabular-nums;
 }
 
+.player-module .tile--medal {
+  --pm-cell: 2rem;
+  border-width: 3px;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.player-module .tile--gold {
+  border-color: #b8860b;
+}
+
+.player-module .tile--silver {
+  border-color: #8a8d91;
+}
+
+.player-module .tile--bronze {
+  border-color: #a0522d;
+}
+
 
 .player-module .tabs {
   display: flex;
@@ -63,5 +82,16 @@
 
   tfoot tr:first-child > * {
     border-top: 2px solid var(--pm-ink);
+  }
+
+  .no-data {
+    color: var(--pm-graphite);
+  }
+
+  @media (max-width: 767.98px) {
+    th,
+    td {
+      white-space: nowrap;
+    }
   }
 }
