@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   ROLES = %w[admin editor].freeze
 
+  validates :email_address, presence: true, uniqueness: true
   validates :role, inclusion: { in: ROLES }
 
   def admin?

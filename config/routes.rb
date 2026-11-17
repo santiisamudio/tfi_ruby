@@ -3,7 +3,18 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "dashboard#index"
+
+    resources :users, except: :destroy do
+      patch :activate, on: :member
+      patch :deactivate, on: :member
+    end
+
+    resources :players, only: [:index] do
+      patch :block, on: :member
+      patch :unblock, on: :member
+    end
   end
+
   resource :session
   resources :passwords, param: :token
 

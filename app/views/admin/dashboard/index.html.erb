@@ -7,3 +7,12 @@
 <% else %>
   <p>Rol: Editor de puntajes</p>
 <% end %>
+
+<h2>Gestión</h2>
+
+<ul>
+  <li><%= link_to "Jugadores", admin_players_path %></li>
+  <% if Current.user.admin? %>
+    <li><%= link_to "Usuarios", admin_users_path %></li>
+  <% end %>
+</ul>

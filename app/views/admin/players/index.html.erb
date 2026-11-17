@@ -1,0 +1,27 @@
+<h1>Jugadores</h1>
+<table>
+  <thead><tr><th>Nombre</th><th>Puntaje</th><th>Racha actual</th><th>Mejor racha</th><th>Estado</th><th>Acciones</th></tr></thead>
+  <tbody>
+    <% @players.each do |player| %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.score %></td>
+        <td><%= player.current_streak %></td>
+        <td><%= player.best_streak %></td>
+        <td><%= player.blocked? ? "Bloqueado" : "Activo" %></td>
+        <td>
+          <% if Current.user.admin? %>
+            <% if player.blocked? %>
+              <%= button_to "Desbloquear", unblock_admin_player_path(player), method: :patch %>
+            <% else %>
+              <%= button_to "Bloquear", block_admin_player_path(player), method: :patch %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% if @players.empty? %>
+  <p>Todavia no hay jugadores registrados.</p>
+<% end %>

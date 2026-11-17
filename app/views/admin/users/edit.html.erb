@@ -1,0 +1,41 @@
+<h1>Editar usuario</h1>
+
+<%= form_with model: [:admin, @user] do |form| %>
+  <% if @user.errors.any? %>
+    <div>
+      <h2>Se encontraron errores:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :email_address, "Correo electrónico" %>
+    <%= form.email_field :email_address, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :role, "Rol" %>
+    <%= form.select :role, [
+      ["Administrador", "admin"],
+      ["Editor de puntajes", "editor"]
+    ] %>
+  </div>
+
+  <div>
+    <%= form.label :password, "Nueva contraseña (opcional)" %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div>
+    <%= form.label :password_confirmation, "Confirmar nueva contraseña" %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+
+  <%= form.submit "Guardar cambios" %>
+<% end %>
+
+<%= link_to "Volver", admin_users_path %>

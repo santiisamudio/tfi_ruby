@@ -13,6 +13,7 @@ module Authentication
   end
 
   private
+
     def authenticated?
       resume_session
     end
@@ -23,6 +24,13 @@ module Authentication
 
     def resume_session
       Current.session ||= find_session_by_cookie
+
+      if Current.session&.user&.active?
+        Current.session
+      else
+        terminate_session if Current.session
+        nil
+      end
     end
 
     def find_session_by_cookie
