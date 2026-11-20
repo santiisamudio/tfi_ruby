@@ -1,0 +1,201 @@
+welcome:
+  message: |
+    Hola. Te explico cómo se juega, de a una cosa por vez.
+
+    Elegí qué querés saber.
+  options: &menu
+    - what_is
+    - types
+    - game
+    - hints
+    - scoring
+    - streak
+
+menu:
+  prompt: Volver al menú
+  message: ¿Qué querés saber?
+  options: *menu
+
+what_is:
+  prompt: ¿Qué es un críptico?
+  message: |
+    Es un acertijo de palabras: una frase que lleva dos veces a la misma palabra, una por su significado y otra por un juego de palabras.
+
+    Nació en los crucigramas británicos. La frase se lee como algo normal, pero hay que leerla como si fueran instrucciones.
+
+    En todo el chat uso el mismo ejemplo: «El sur metido en el canto del pollito da el suelo (4)».
+  options: [parts, how_to_solve]
+
+parts:
+  prompt: ¿Qué partes tiene?
+  message: |
+    Mirá este ejemplo: <mark class="mark-material">El sur</mark> <span class="mark-indicator">metido en</span> <mark class="mark-material">el canto del pollito</mark> da <mark class="mark-definition">el suelo</mark> (4).
+
+    La <mark class="mark-definition">definición</mark> es un sinónimo o una descripción de la respuesta, y siempre está en una punta: acá, «el suelo».
+
+    El <span class="mark-indicator">indicador</span> dice qué operación hacer: «metido en» avisa que algo va dentro de otra cosa. El <mark class="mark-material">material</mark> son las piezas sobre las que se opera: «el sur» y «el canto del pollito».
+
+    «Da» es una palabra de unión: solo conecta las partes. El número entre paréntesis es la enumeración: cuántas letras tiene la respuesta, sin contar las tildes.
+  options: [parts_answer, how_to_solve]
+
+parts_answer:
+  prompt: ¿Cuál es la respuesta?
+  message: |
+    PISO. El sur vale S y el canto del pollito es PÍO: la S metida en PÍO da PI<strong>S</strong>O.
+
+    Y además PISO es el suelo, y tiene 4 letras. Cuando las dos lecturas llevan a la misma palabra, la respuesta es segura.
+  options: [how_to_solve, types]
+
+how_to_solve:
+  prompt: ¿Cómo lo resuelvo?
+  message: |
+    «El sur metido en el canto del pollito da el suelo (4)», paso a paso:
+
+    Primero buscá la definición en una punta: al final dice <mark class="mark-definition">el suelo</mark>. Después, el indicador: <span class="mark-indicator">metido en</span> avisa que algo va dentro de otra cosa.
+
+    El material es <mark class="mark-material">el sur</mark>, que vale S, y <mark class="mark-material">el canto del pollito</mark>, que es PÍO. La S adentro de PÍO da PISO, que es el suelo y tiene 4 letras.
+
+    Las palabras de unión como «da», «es» o «para» solo conectan las dos partes, y la puntuación suele ser engañosa: se puede ignorar.
+  options: [types, game]
+
+types:
+  prompt: Mostrame los tipos de juego de palabras
+  message: Hay trece. Elegí uno y te cuento cómo funciona y qué palabras suelen avisarlo.
+  options:
+    - anagrama
+    - oculta
+    - charada
+    - contenedor
+    - inversion
+    - supresion
+    - homofono
+    - doble_definicion
+    - iniciales
+    - finales
+    - sustitucion
+    - simbolos
+    - combinada
+
+anagrama:
+  prompt: Anagrama
+  message: |
+    Se reordenan las letras del material. Los indicadores típicos son «loco», «revuelto», «desordenado», «alborotado» o «roto».
+  options: [oculta, types]
+
+oculta:
+  prompt: Oculta
+  message: |
+    La respuesta está escrita de corrido dentro del material. Los indicadores típicos son «esconde», «oculta», «guarda» o «en parte».
+  options: [charada, types]
+
+charada:
+  prompt: Charada
+  message: |
+    Se pegan piezas una detrás de otra. Los indicadores típicos son «con», «y», «más» o «junto a», aunque a veces no hay ninguno.
+  options: [contenedor, types]
+
+contenedor:
+  prompt: Contenedor
+  message: |
+    Una pieza va dentro de otra. Los indicadores típicos son «dentro de», «metido en», «abraza», «rodea» o «traga».
+  options: [parts_answer, inversion, types]
+
+inversion:
+  prompt: Inversión
+  message: |
+    El material se lee al revés. Los indicadores típicos son «al revés», «de vuelta», «que vuelve» o «para atrás».
+  options: [supresion, types]
+
+supresion:
+  prompt: Supresión
+  message: |
+    Se quita una letra del principio, del final o del medio. Los indicadores típicos son «sin cabeza», «descabezado», «sin cola» o «sin corazón».
+  options: [homofono, types]
+
+homofono:
+  prompt: Homófono
+  message: |
+    Una palabra que suena igual a otra: la h muda, la b y la v, la s, la c y la z, la ll y la y. Los indicadores típicos son «se oye», «suena» o «de oído».
+  options: [doble_definicion, types]
+
+doble_definicion:
+  prompt: Doble definición
+  message: |
+    Son dos definiciones de la misma palabra, sin indicador ni material.
+  options: [iniciales, types]
+
+iniciales:
+  prompt: Iniciales
+  message: |
+    La respuesta se forma con las primeras letras de palabras seguidas. Los indicadores típicos son «al principio» o «cabezas de».
+  options: [finales, types]
+
+finales:
+  prompt: Finales
+  message: |
+    La respuesta se forma con las últimas letras de palabras seguidas. Los indicadores típicos son «colas de» o «finales de».
+  options: [sustitucion, types]
+
+sustitucion:
+  prompt: Sustitución
+  message: |
+    Se cambia una letra por otra. Los indicadores típicos son «con otra cabeza» o «con otro final».
+  options: [simbolos, types]
+
+simbolos:
+  prompt: Símbolos
+  message: |
+    Se usan abreviaturas convencionales: números romanos, puntos cardinales, elementos químicos o notas musicales. El indicador depende del símbolo.
+
+    En castellano, «uno» puede valer I, y norte, sur, este y oeste valen N, S, E y O. Por eso, en el ejemplo de siempre, «el sur» vale S.
+  options: [combinada, types]
+
+combinada:
+  prompt: Combinada
+  message: |
+    Mezcla dos o más operaciones en el mismo enunciado, cada una con su indicador.
+  options: [game, types]
+
+game:
+  prompt: ¿Cómo es una partida?
+  message: |
+    Elegís una dificultad: Fácil, Medio o Avanzado. Te toca al azar un críptico de esa dificultad que todavía no jugaste.
+
+    Al tocar Jugar arranca el cronómetro. Tenés hasta cinco intentos, y la respuesta se compara sin tildes, sin mayúsculas y sin espacios ni signos: «camion», «Camión» y «&nbsp;CAMIÓN&nbsp;» valen igual. La Ñ no es lo mismo que la N.
+
+    Si acertás, sumás puntos y ves la explicación. Si te rendís, ves la respuesta pero no sumás nada. No hay tiempo límite: si cerrás la pestaña, la partida te espera, pero el reloj sigue corriendo.
+
+    Cada críptico se juega una sola vez, y el tiempo que vale es el que mide el servidor.
+  options: [hints, scoring]
+
+hints:
+  prompt: ¿Cómo funcionan las pistas?
+  message: |
+    Podés pedir hasta cuatro, siempre en este orden: el tipo de juego de palabras, la <mark class="mark-definition">definición</mark> resaltada, el <span class="mark-indicator">indicador</span> y el <mark class="mark-material">material</mark> resaltados, y un texto de ayuda.
+
+    Con «El sur metido en el canto del pollito da el suelo (4)» serían: contenedor; <mark class="mark-definition">el suelo</mark>; <span class="mark-indicator">metido en</span> con <mark class="mark-material">el sur</mark> y <mark class="mark-material">el canto del pollito</mark>; y una ayuda como «El sur es una sola letra: metela adentro del sonido del pollito».
+
+    Cada pista te saca una parte de los puntos: cuantas más pedís, menos ganás, y si pedís las cuatro te queda muy poco.
+  options: [scoring, streak]
+
+scoring:
+  prompt: ¿Cómo se calculan los puntos?
+  message: |
+    Gana más quien resuelve más rápido, con menos pistas y sin cortar la racha. Si te rendís, no sumás puntos.
+
+    Cada críptico arranca con un puntaje que depende de su tipo y de su dificultad: con la configuración inicial, uno Medio vale el doble que uno Fácil, y uno Avanzado, el triple.
+
+    El tiempo no te resta si resolvés dentro de lo esperado: un minuto en Fácil, tres en Medio y cinco en Avanzado. Si tardás más, perdés puntos de a poco: si tardás el doble, ganás la mitad. Aunque tardes mucho, siempre te queda algo.
+
+    Las pistas te sacan puntos y la racha te da un extra.
+  options: [hints, streak]
+
+streak:
+  prompt: ¿Qué es la racha?
+  message: |
+    Son los días seguidos en los que resolviste al menos un críptico. Rendirse no suma.
+
+    Cada día seguido te da un poco más de puntos.
+
+    Si pasa un día entero sin que resuelvas ninguno, la racha vuelve a cero.
+  options: [scoring]

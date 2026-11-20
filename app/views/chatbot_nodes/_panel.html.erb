@@ -1,0 +1,23 @@
+<div id="chatbot" class="chatbot" data-turbo-permanent data-controller="chatbot"
+     data-action="keydown.esc->chatbot#close click@document->chatbot#openFromTrigger">
+  <button type="button" class="chatbot__launcher" aria-controls="chatbot-panel" aria-expanded="false"
+          data-chatbot-target="launcher" data-action="chatbot#toggle">
+    <span class="chatbot__launcher-tile" aria-hidden="true">?</span>
+    Cómo se juega
+  </button>
+
+  <section id="chatbot-panel" class="chatbot__panel" role="dialog" aria-labelledby="chatbot-title" hidden data-chatbot-target="panel">
+    <header class="chatbot__header">
+      <h2 id="chatbot-title" class="chatbot__title">Cómo se juega</h2>
+      <button type="button" class="chatbot__close" aria-label="Cerrar" data-action="chatbot#close">×</button>
+    </header>
+
+    <ol id="chatbot-log" class="chatbot__log" role="log" data-chatbot-target="log">
+      <%= render "chatbot_nodes/answer", node: node %>
+    </ol>
+
+    <nav id="chatbot-options" class="chatbot__options" aria-label="Preguntas">
+      <%= render "chatbot_nodes/options", node: node %>
+    </nav>
+  </section>
+</div>

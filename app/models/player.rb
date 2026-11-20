@@ -11,6 +11,8 @@ class Player < ApplicationRecord
   validates :best_streak, numericality: { only_integer: true, greater_than_or_equal_to: :current_streak }
 
   scope :not_blocked, -> { where(blocked_at: nil) }
+  scope :with_active_streak, -> { where(last_streak_on: Date.current.yesterday..Date.current) }
+  scope :streak_ranking, -> { not_blocked.with_active_streak.order(current_streak: :desc, best_streak: :desc, normalized_name: :asc) }
 
   def self.name_taken?(name)
     exists?(normalized_name: name.strip.downcase)
@@ -64,6 +66,13 @@ class Player < ApplicationRecord
 
     first_day = last_streak_on - (current_streak - 1)
     (first_day..last_streak_on).to_a
+  end
+
+  def streak_position
+    index = Player.streak_ranking.pluck(:id).index(id)
+    if index
+      index + 1
+    end
   end
 
   private
