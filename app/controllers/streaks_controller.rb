@@ -4,5 +4,6 @@ class StreaksController < ApplicationController
 
   def show
     @player = current_player
+    @streak_help = ChatbotNode.find("streak")
   end
 end

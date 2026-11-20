@@ -1,0 +1,6 @@
+<%= turbo_stream.append "chatbot-log" do %>
+  <%= render "chatbot_nodes/question", node: @node %>
+  <%= render "chatbot_nodes/answer", node: @node %>
+<% end %>
+
+<%= turbo_stream.update "chatbot-options", partial: "chatbot_nodes/options", locals: { node: @node } %>

@@ -31,4 +31,8 @@
       </div>
     <% end %>
   </dl>
+
+  <p class="mt-4">
+    <%= link_to @streak_help.prompt, chatbot_node_path(@streak_help.id), data: { turbo_stream: true, chatbot_open: true } %>
+  </p>
 </div>

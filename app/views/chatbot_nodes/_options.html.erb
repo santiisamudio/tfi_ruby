@@ -1,0 +1,5 @@
+<% node.options.each do |option| %>
+  <%= link_to option.prompt, chatbot_node_path(option.id),
+        class: [ "chatbot__option", ("chatbot__option--menu" if option.menu?) ],
+        data: { turbo_stream: true, chatbot_target: "option", action: "chatbot#awaitReply" } %>
+<% end %>
