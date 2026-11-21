@@ -10,7 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_194125) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_194121) do
+  create_table "cryptics", force: :cascade do |t|
+    t.string "source_id", null: false
+    t.text "clue", null: false
+    t.string "enumeration", null: false
+    t.string "answer", null: false
+    t.json "definitions", null: false
+    t.json "indicators", null: false
+    t.json "material", null: false
+    t.string "puzzle_type", null: false
+    t.string "difficulty", null: false
+    t.text "hint"
+    t.text "explanation"
+    t.string "author"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_cryptics_on_source_id", unique: true
+    t.check_constraint "CASE WHEN json_valid(definitions) THEN json_type(definitions) = 'array' ELSE 0 END", name: "cryptics_definitions_array"
+    t.check_constraint "CASE WHEN json_valid(indicators) THEN json_type(indicators) = 'array' ELSE 0 END", name: "cryptics_indicators_array"
+    t.check_constraint "CASE WHEN json_valid(material) THEN json_type(material) = 'array' ELSE 0 END", name: "cryptics_material_array"
+    t.check_constraint "active IN (0, 1)", name: "cryptics_active_boolean"
+    t.check_constraint "difficulty IN ('facil', 'medio', 'avanzado')", name: "cryptics_difficulty_allowed"
+    t.check_constraint "length(trim(answer)) > 0", name: "cryptics_answer_not_empty"
+    t.check_constraint "length(trim(clue)) > 0", name: "cryptics_clue_not_empty"
+    t.check_constraint "length(trim(enumeration)) > 0", name: "cryptics_enumeration_not_empty"
+    t.check_constraint "length(trim(source_id)) > 0", name: "cryptics_source_id_not_empty"
+    t.check_constraint "puzzle_type != 'doble_definicion' OR json_array_length(definitions) = 2", name: "cryptics_double_definition_count"
+    t.check_constraint "puzzle_type IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cryptics_puzzle_type_allowed"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
     t.string "normalized_name", null: false

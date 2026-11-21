@@ -33,9 +33,20 @@ es:
       models:
         cryptic:
           attributes:
+            enumeration:
+              invalid: debe ser un número positivo entre paréntesis, como (6)
+              answer_length_mismatch: "debe indicar %{count} letras, sin contar espacios"
             definitions:
               invalid_text_list: debe ser una lista de textos no vacíos
+              double_definition_count: debe contener exactamente dos definiciones para el tipo doble definición
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
             indicators:
               invalid_text_list: debe ser una lista de textos no vacíos
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
             material:
               invalid_text_list: debe ser una lista de textos no vacíos
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
+              oculta_mismatch: debe contener la respuesta de forma consecutiva, sin contar espacios ni signos
+              anagrama_mismatch: debe tener exactamente las mismas letras que la respuesta
+              iniciales_mismatch: debe formar la respuesta con las primeras letras de sus palabras, ignorando la palabra "y"
+              finales_mismatch: debe formar la respuesta con las últimas letras de sus palabras, ignorando la palabra "y"
