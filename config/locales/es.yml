@@ -1,10 +1,27 @@
 es:
   activerecord:
     models:
+      cryptic:
+        one: Críptico
+        other: Crípticos
       player:
         one: Jugador
         other: Jugadores
     attributes:
+      cryptic:
+        source_id: Identificador de la fuente
+        clue: Enunciado
+        enumeration: Enumeración
+        answer: Respuesta
+        definitions: Definiciones
+        indicators: Indicadores
+        material: Material
+        puzzle_type: Tipo
+        difficulty: Dificultad
+        hint: Ayuda
+        explanation: Explicación
+        author: Autor
+        active: Activo
       player:
         name: Nombre
         normalized_name: Nombre
@@ -12,3 +29,13 @@ es:
         current_streak: Racha actual
         best_streak: Mejor racha
         last_streak_on: Último día de la racha
+    errors:
+      models:
+        cryptic:
+          attributes:
+            definitions:
+              invalid_text_list: debe ser una lista de textos no vacíos
+            indicators:
+              invalid_text_list: debe ser una lista de textos no vacíos
+            material:
+              invalid_text_list: debe ser una lista de textos no vacíos
