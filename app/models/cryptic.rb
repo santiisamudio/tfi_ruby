@@ -1,4 +1,7 @@
 class Cryptic < ApplicationRecord
+  has_many :games, dependent: :restrict_with_error
+  has_many :daily_challenges, dependent: :restrict_with_error
+
   PUZZLE_TYPES = %w[
     anagrama oculta charada contenedor inversion supresion homofono
     doble_definicion iniciales finales sustitucion simbolos combinada

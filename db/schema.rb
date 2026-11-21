@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_194121) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_223117) do
   create_table "cryptics", force: :cascade do |t|
     t.string "source_id", null: false
     t.text "clue", null: false
@@ -39,6 +39,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_194121) do
     t.check_constraint "length(trim(source_id)) > 0", name: "cryptics_source_id_not_empty"
     t.check_constraint "puzzle_type != 'doble_definicion' OR json_array_length(definitions) = 2", name: "cryptics_double_definition_count"
     t.check_constraint "puzzle_type IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cryptics_puzzle_type_allowed"
+  end
+
+  create_table "daily_challenges", force: :cascade do |t|
+    t.date "date", null: false
+    t.integer "cryptic_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cryptic_id"], name: "index_daily_challenges_on_cryptic_id"
+    t.index ["date"], name: "index_daily_challenges_on_date", unique: true
+    t.index ["id", "cryptic_id"], name: "index_daily_challenges_on_id_and_cryptic_id", unique: true
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.integer "player_id", null: false
+    t.integer "cryptic_id", null: false
+    t.integer "daily_challenge_id"
+    t.string "status", default: "pending", null: false
+    t.integer "attempts_count", default: 0, null: false
+    t.integer "hints_count", default: 0, null: false
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cryptic_id"], name: "index_games_on_cryptic_id"
+    t.index ["daily_challenge_id"], name: "index_games_on_daily_challenge_id"
+    t.index ["player_id", "cryptic_id"], name: "index_games_one_started_per_cryptic", unique: true, where: "started_at IS NOT NULL"
+    t.index ["player_id", "daily_challenge_id"], name: "index_games_one_daily_per_player", unique: true, where: "daily_challenge_id IS NOT NULL"
+    t.index ["player_id"], name: "index_games_on_player_id"
+    t.index ["player_id"], name: "index_games_one_open_per_player", unique: true, where: "status IN ('pending', 'in_progress')"
+    t.check_constraint "(status = 'pending' AND started_at IS NULL AND finished_at IS NULL AND points IS NULL AND attempts_count = 0 AND hints_count = 0) OR (status = 'in_progress' AND started_at IS NOT NULL AND finished_at IS NULL AND points IS NULL AND attempts_count < 5) OR (status = 'won' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points >= 10 AND attempts_count >= 1) OR (status = 'lost' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND attempts_count = 5) OR (status = 'surrendered' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND attempts_count < 5) OR (status = 'expired' AND daily_challenge_id IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND (started_at IS NOT NULL OR (attempts_count = 0 AND hints_count = 0)))", name: "games_state_consistency"
+    t.check_constraint "attempts_count BETWEEN 0 AND 5", name: "games_attempts_range"
+    t.check_constraint "hints_count BETWEEN 0 AND 4", name: "games_hints_range"
+    t.check_constraint "started_at IS NULL OR finished_at IS NULL OR finished_at >= started_at", name: "games_timestamp_order"
   end
 
   create_table "players", force: :cascade do |t|
@@ -77,5 +111,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_194121) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "daily_challenges", "cryptics"
+  add_foreign_key "games", "cryptics"
+  add_foreign_key "games", "daily_challenges", column: ["daily_challenge_id", "cryptic_id"], primary_key: ["id", "cryptic_id"]
+  add_foreign_key "games", "players"
   add_foreign_key "sessions", "users"
 end

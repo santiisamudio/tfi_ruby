@@ -2,6 +2,7 @@ class Player < ApplicationRecord
   NAME_LENGTH = 3..20
 
   has_secure_token
+  has_many :games, dependent: :restrict_with_error
 
   before_validation :normalize_name
 

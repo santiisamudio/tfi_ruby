@@ -3,7 +3,7 @@ require "test_helper"
 class CrypticTest < ActiveSupport::TestCase
   setup do
     @cryptic = Cryptic.new(
-      source_id: "cr-013",
+      source_id: "test-cr-013",
       clue: "Mi metido en el hogar da una prenda",
       enumeration: "(6)",
       answer: "CAMISA",
@@ -25,7 +25,10 @@ class CrypticTest < ActiveSupport::TestCase
     easy = @cryptic.dup
     easy.update!(source_id: "cr-easy", difficulty: "facil")
 
-    assert_equal [ @cryptic ], Cryptic.active.with_difficulty("medio").to_a
+    matching = Cryptic.active.with_difficulty("medio").to_a
+    assert_includes matching, @cryptic
+    assert_not_includes matching, inactive
+    assert_not_includes matching, easy
     assert_equal [ "Mi", "el hogar" ], @cryptic.reload.material
   end
 

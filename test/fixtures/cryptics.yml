@@ -1,0 +1,23 @@
+camisa:
+  source_id: cr-013
+  clue: Mi metido en el hogar da una prenda
+  enumeration: "(6)"
+  answer: CAMISA
+  definitions: ["una prenda"]
+  indicators: ["metido en"]
+  material: ["Mi", "el hogar"]
+  puzzle_type: contenedor
+  difficulty: medio
+  active: true
+
+mate:
+  source_id: cr-001
+  clue: La cama tejida esconde la infusión argentina
+  enumeration: "(4)"
+  answer: MATE
+  definitions: ["la infusión argentina"]
+  indicators: ["esconde"]
+  material: ["cama tejida"]
+  puzzle_type: oculta
+  difficulty: facil
+  active: true

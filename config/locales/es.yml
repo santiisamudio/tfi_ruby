@@ -1,6 +1,12 @@
 es:
   activerecord:
     models:
+      game:
+        one: Partida
+        other: Partidas
+      daily_challenge:
+        one: Desafío diario
+        other: Desafíos diarios
       cryptic:
         one: Críptico
         other: Crípticos
@@ -8,6 +14,22 @@ es:
         one: Jugador
         other: Jugadores
     attributes:
+      daily_challenge:
+        date: Fecha
+        cryptic: Críptico
+      game:
+        player: Jugador
+        player_id: Jugador
+        cryptic: Críptico
+        cryptic_id: Críptico
+        daily_challenge: Desafío diario
+        daily_challenge_id: Desafío diario
+        status: Estado
+        attempts_count: Intentos consumidos
+        hints_count: Pistas utilizadas
+        started_at: Inicio
+        finished_at: Finalización
+        points: Puntos
       cryptic:
         source_id: Identificador de la fuente
         clue: Enunciado
@@ -31,6 +53,22 @@ es:
         last_streak_on: Último día de la racha
     errors:
       models:
+        game:
+          attributes:
+            base:
+              inconsistent_state: El estado no coincide con las fechas, los contadores o los puntos de la partida
+            player_id:
+              open_game_exists: ya tiene una partida pendiente o en curso
+            cryptic_id:
+              already_played: ya fue jugado por este jugador
+            cryptic:
+              daily_mismatch: no coincide con el del desafío diario
+            started_at:
+              outside_daily_date: debe pertenecer a la fecha del desafío diario
+            finished_at:
+              before_start: no puede ser anterior al inicio
+              before_expiration: debe ser posterior al día del desafío para registrar su vencimiento
+              outside_daily_date: debe pertenecer a la fecha del desafío diario
         cryptic:
           attributes:
             enumeration:
