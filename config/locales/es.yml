@@ -16,6 +16,10 @@ es:
       inactive_cryptic: Este críptico ya no está activo y no puede iniciarse.
       already_played: Ya jugaste este críptico.
       open_game_exists: Ya tenés otra partida pendiente o en curso.
+      player_required: Elegí un nombre antes de jugar.
+      game_not_found: No se encontró una partida de este jugador con ese identificador.
+      invalid_parameters: Faltan parámetros obligatorios o tienen un formato incorrecto.
+      invalid_csrf: La solicitud no tiene un token CSRF válido.
       daily_expired: El desafío diario no está vigente; solo puede jugarse en su fecha.
       not_started: Presioná Jugar antes de realizar esta acción.
       invalid_answer: La respuesta debe ser un texto.
