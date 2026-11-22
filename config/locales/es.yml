@@ -1,4 +1,21 @@
 es:
+  scores:
+    errors:
+      type_points: Los puntos del tipo deben ser un entero entre 10 y 1000.
+      multiplier: El multiplicador debe ser un número mayor que 0 y menor o igual a 5.
+      duration: La duración debe ser un número finito mayor o igual a cero.
+      hints: La cantidad de pistas debe ser un entero entre 0 y 4.
+      streak: La racha debe incluir al menos el día de resolución.
+  games:
+    errors:
+      blocked_player: Tu jugador está bloqueado y no puede jugar.
+      invalid_difficulty: Elegí una dificultad válida.
+      no_cryptics: No quedan crípticos activos sin jugar para esa dificultad.
+      finished_game: Esta partida ya terminó y no puede iniciarse nuevamente.
+      inactive_cryptic: Este críptico ya no está activo y no puede iniciarse.
+      already_played: Ya jugaste este críptico.
+      daily_expired: El desafío diario venció y debe cerrarse antes de continuar.
+      daily_not_supported: El inicio de desafíos diarios todavía no está implementado.
   activerecord:
     models:
       game:

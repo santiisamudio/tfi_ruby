@@ -1,4 +1,13 @@
 class Game < ApplicationRecord
+  class ActionError < StandardError
+    attr_reader :code
+
+    def initialize(code)
+      @code = code
+      super(I18n.t("games.errors.#{code}", raise: true))
+    end
+  end
+
   STATUSES = %w[pending in_progress won lost surrendered expired].freeze
   OPEN_STATUSES = %w[pending in_progress].freeze
 
