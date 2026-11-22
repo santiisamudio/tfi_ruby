@@ -1,14 +1,14 @@
-class GameStart
+class Games::Start
   def self.call(player:, game_id:)
+    Games::DailyExpiration.call(player: player)
+
     player.with_lock do
       raise Game::ActionError.new(:blocked_player) if player.blocked?
 
       game = player.games.find(game_id)
+      Games::DailyExpiration.ensure_current!(game)
       unless Game::OPEN_STATUSES.include?(game.status)
         raise Game::ActionError.new(:finished_game)
-      end
-      if game.daily_challenge
-        raise Game::ActionError.new(:daily_not_supported)
       end
       next game if game.status == "in_progress"
 

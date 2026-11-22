@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_223117) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_193354) do
   create_table "cryptics", force: :cascade do |t|
     t.string "source_id", null: false
     t.text "clue", null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_223117) do
     t.integer "cryptic_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cryptic_id"], name: "index_daily_challenges_on_cryptic_id"
+    t.index ["cryptic_id"], name: "index_daily_challenges_on_cryptic_id", unique: true
     t.index ["date"], name: "index_daily_challenges_on_date", unique: true
     t.index ["id", "cryptic_id"], name: "index_daily_challenges_on_id_and_cryptic_id", unique: true
   end

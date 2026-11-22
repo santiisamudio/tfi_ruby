@@ -11,11 +11,18 @@ es:
       blocked_player: Tu jugador está bloqueado y no puede jugar.
       invalid_difficulty: Elegí una dificultad válida.
       no_cryptics: No quedan crípticos activos sin jugar para esa dificultad.
-      finished_game: Esta partida ya terminó y no puede iniciarse nuevamente.
+      no_daily_cryptics: No quedan crípticos activos sin asignar para un nuevo desafío diario.
+      finished_game: Esta partida ya terminó y no admite esa acción.
       inactive_cryptic: Este críptico ya no está activo y no puede iniciarse.
       already_played: Ya jugaste este críptico.
-      daily_expired: El desafío diario venció y debe cerrarse antes de continuar.
-      daily_not_supported: El inicio de desafíos diarios todavía no está implementado.
+      open_game_exists: Ya tenés otra partida pendiente o en curso.
+      daily_expired: El desafío diario no está vigente; solo puede jugarse en su fecha.
+      not_started: Presioná Jugar antes de realizar esta acción.
+      invalid_answer: La respuesta debe ser un texto.
+      empty_answer: Escribí una respuesta con letras; no se consumió ningún intento.
+      invalid_hint_level: El nivel de pista debe ser un entero entre 1 y 4.
+      hint_out_of_order: Debés solicitar las pistas en orden.
+      missing_hint: Este críptico no tiene texto de ayuda; no se consumió la pista.
   activerecord:
     models:
       game:

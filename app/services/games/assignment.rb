@@ -1,5 +1,7 @@
-class GameAssignment
+class Games::Assignment
   def self.call(player:, difficulty:)
+    Games::DailyExpiration.call(player: player)
+
     player.with_lock do
       raise Game::ActionError.new(:blocked_player) if player.blocked?
       unless Cryptic::DIFFICULTIES.include?(difficulty)

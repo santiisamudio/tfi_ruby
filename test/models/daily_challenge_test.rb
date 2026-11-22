@@ -10,6 +10,15 @@ class DailyChallengeTest < ActiveSupport::TestCase
     assert_raises(ActiveRecord::RecordNotUnique) { duplicate.save!(validate: false) }
   end
 
+  test "does not assign the same cryptic on another date" do
+    DailyChallenge.create!(date: Date.current.yesterday, cryptic: cryptics(:camisa))
+    duplicate = DailyChallenge.new(date: Date.current, cryptic: cryptics(:camisa))
+
+    assert_not duplicate.valid?
+    assert duplicate.errors.of_kind?(:cryptic_id, :taken)
+    assert_raises(ActiveRecord::RecordNotUnique) { duplicate.save!(validate: false) }
+  end
+
   test "requires a date and a cryptic" do
     challenge = DailyChallenge.new
 

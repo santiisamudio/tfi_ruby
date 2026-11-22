@@ -3,4 +3,5 @@ class DailyChallenge < ApplicationRecord
   has_many :games, dependent: :restrict_with_error
 
   validates :date, presence: true, uniqueness: true
+  validates :cryptic_id, uniqueness: true
 end

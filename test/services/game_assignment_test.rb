@@ -2,7 +2,7 @@ require "test_helper"
 
 class GameAssignmentTest < ActiveSupport::TestCase
   test "assigns an eligible cryptic without starting the clock" do
-    game = GameAssignment.call(player: players(:newbie), difficulty: "medio")
+    game = Games::Assignment.call(player: players(:newbie), difficulty: "medio")
 
     assert_equal cryptics(:camisa), game.cryptic
     assert_equal "pending", game.status
@@ -18,7 +18,7 @@ class GameAssignmentTest < ActiveSupport::TestCase
     original_start = game.started_at
 
     assert_no_difference "Game.count" do
-      recovered = GameAssignment.call(player: players(:newbie), difficulty: "facil")
+      recovered = Games::Assignment.call(player: players(:newbie), difficulty: "facil")
       assert_equal game, recovered
       assert_equal original_start, recovered.started_at
       assert_equal 2, recovered.attempts_count
@@ -32,25 +32,25 @@ class GameAssignmentTest < ActiveSupport::TestCase
       started_at: 1.minute.ago, finished_at: Time.current, points: 0
     )
     error = assert_raises(Game::ActionError) do
-      GameAssignment.call(player: players(:newbie), difficulty: "medio")
+      Games::Assignment.call(player: players(:newbie), difficulty: "medio")
     end
     assert_equal :no_cryptics, error.code
 
     cryptics(:mate).update!(active: false)
     assert_raises(Game::ActionError) do
-      GameAssignment.call(player: players(:newbie), difficulty: "facil")
+      Games::Assignment.call(player: players(:newbie), difficulty: "facil")
     end
   end
 
   test "rejects blocked players and invalid difficulty without creating games" do
     assert_no_difference "Game.count" do
       error = assert_raises(Game::ActionError) do
-        GameAssignment.call(player: players(:blocked), difficulty: "medio")
+        Games::Assignment.call(player: players(:blocked), difficulty: "medio")
       end
       assert_equal :blocked_player, error.code
 
       error = assert_raises(Game::ActionError) do
-        GameAssignment.call(player: players(:newbie), difficulty: "otra")
+        Games::Assignment.call(player: players(:newbie), difficulty: "otra")
       end
       assert_equal :invalid_difficulty, error.code
     end
