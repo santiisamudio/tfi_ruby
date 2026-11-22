@@ -7,6 +7,18 @@ es:
       hints: La cantidad de pistas debe ser un entero entre 0 y 4.
       streak: La racha debe incluir al menos el día de resolución.
   games:
+    share:
+      title: Rubípticos — Resultado
+      daily: "Desafío del día: %{date}"
+      statuses:
+        won: Resuelto
+        lost: Intentos agotados
+        surrendered: Me rendí
+        expired: Desafío vencido
+      points: "Puntos: %{points}"
+      attempts: "Intentos: %{attempts}/5"
+      hints: "Pistas utilizadas: %{hints}/4"
+      time: "Tiempo: %{seconds} segundos"
     errors:
       blocked_player: Tu jugador está bloqueado y no puede jugar.
       invalid_difficulty: Elegí una dificultad válida.
@@ -27,6 +39,7 @@ es:
       invalid_hint_level: El nivel de pista debe ser un entero entre 1 y 4.
       hint_out_of_order: Debés solicitar las pistas en orden.
       missing_hint: Este críptico no tiene texto de ayuda; no se consumió la pista.
+      share_unfinished: Solo podés compartir el resultado de una partida terminada.
   activerecord:
     models:
       game:

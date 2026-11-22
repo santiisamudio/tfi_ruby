@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post :start
       post :hint
       post :surrender
+      get :share
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

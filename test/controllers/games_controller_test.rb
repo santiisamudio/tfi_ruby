@@ -103,6 +103,30 @@ class GamesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "sharing is restricted to finished games belonging to the current player" do
+    game = @player.games.create!(cryptic: cryptics(:camisa))
+    get share_game_url(game)
+    assert_response :unprocessable_content
+    assert_equal "share_unfinished", response.parsed_body.dig("error", "code")
+
+    game.update!(
+      status: "surrendered", started_at: 1.minute.ago, finished_at: Time.current, points: 0
+    )
+    get share_game_url(game)
+    assert_response :success
+    assert_equal %w[text whatsapp_url], response.parsed_body.keys
+    assert_includes response.parsed_body["text"], "Puntos: 0"
+    assert_not_includes response.body, "CAMISA"
+    assert_equal "no-store", response.headers["Cache-Control"]
+
+    other = players(:newbie).games.create!(cryptic: cryptics(:mate))
+    get share_game_url(other)
+    assert_response :not_found
+    delete player_url
+    get share_game_url(game)
+    assert_response :unauthorized
+  end
+
   test "does not disable csrf protection for json endpoints" do
     previous = GamesController.allow_forgery_protection
     GamesController.allow_forgery_protection = true
