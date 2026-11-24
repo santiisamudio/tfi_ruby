@@ -1,0 +1,9 @@
+<h1>Panel de administración</h1>
+
+<p>Bienvenido, <%= Current.user.email_address %>.</p>
+
+<% if Current.user.admin? %>
+  <p>Rol: Administrador</p>
+<% else %>
+  <p>Rol: Editor de puntajes</p>
+<% end %>

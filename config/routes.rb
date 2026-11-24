@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   root "home#index"
+
+  namespace :admin do
+    root "dashboard#index"
+  end
   resource :session
   resources :passwords, param: :token
 
@@ -7,6 +11,15 @@ Rails.application.routes.draw do
   resource :streak, only: :show
   resource :leaderboard, only: :show
   resources :chatbot_nodes, only: :show, path: "chatbot"
+  resources :games, only: %i[create show], defaults: { format: :json } do
+    post :daily, on: :collection
+    member do
+      post :start
+      post :hint
+      post :surrender
+      get :share
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

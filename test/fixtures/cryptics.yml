@@ -1,0 +1,27 @@
+camisa:
+  source_id: cr-013
+  clue: Mi metido en el hogar da una prenda
+  enumeration: "(6)"
+  answer: CAMISA
+  definitions: ["una prenda"]
+  indicators: ["metido en"]
+  material: ["Mi", "el hogar"]
+  puzzle_type: contenedor
+  hint: El hogar tiene cuatro letras. Meté MI en el medio.
+  explanation: CA + MI + SA = CAMISA.
+  difficulty: medio
+  active: true
+
+mate:
+  source_id: cr-001
+  clue: La cama tejida esconde la infusión argentina
+  enumeration: "(4)"
+  answer: MATE
+  definitions: ["la infusión argentina"]
+  indicators: ["esconde"]
+  material: ["cama tejida"]
+  puzzle_type: oculta
+  hint: Leé de corrido el final de una palabra y el principio de la siguiente.
+  explanation: ca[MA TE]jida esconde MATE.
+  difficulty: facil
+  active: true

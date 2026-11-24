@@ -1,10 +1,90 @@
 es:
+  scores:
+    errors:
+      type_points: Los puntos del tipo deben ser un entero entre 10 y 1000.
+      multiplier: El multiplicador debe ser un número mayor que 0 y menor o igual a 5.
+      duration: La duración debe ser un número finito mayor o igual a cero.
+      hints: La cantidad de pistas debe ser un entero entre 0 y 4.
+      streak: La racha debe incluir al menos el día de resolución.
+  games:
+    share:
+      title: Rubípticos — Resultado
+      daily: "Desafío del día: %{date}"
+      statuses:
+        won: Resuelto
+        lost: Intentos agotados
+        surrendered: Me rendí
+        expired: Desafío vencido
+      points: "Puntos: %{points}"
+      attempts: "Intentos: %{attempts}/5"
+      hints: "Pistas utilizadas: %{hints}/4"
+      time: "Tiempo: %{seconds} segundos"
+    errors:
+      blocked_player: Tu jugador está bloqueado y no puede jugar.
+      invalid_difficulty: Elegí una dificultad válida.
+      no_cryptics: No quedan crípticos activos sin jugar para esa dificultad.
+      no_daily_cryptics: No quedan crípticos activos sin asignar para un nuevo desafío diario.
+      finished_game: Esta partida ya terminó y no admite esa acción.
+      inactive_cryptic: Este críptico ya no está activo y no puede iniciarse.
+      already_played: Ya jugaste este críptico.
+      open_game_exists: Ya tenés otra partida pendiente o en curso.
+      player_required: Elegí un nombre antes de jugar.
+      game_not_found: No se encontró una partida de este jugador con ese identificador.
+      invalid_parameters: Faltan parámetros obligatorios o tienen un formato incorrecto.
+      invalid_csrf: La solicitud no tiene un token CSRF válido.
+      daily_expired: El desafío diario no está vigente; solo puede jugarse en su fecha.
+      not_started: Presioná Jugar antes de realizar esta acción.
+      invalid_answer: La respuesta debe ser un texto.
+      empty_answer: Escribí una respuesta con letras; no se consumió ningún intento.
+      invalid_hint_level: El nivel de pista debe ser un entero entre 1 y 4.
+      hint_out_of_order: Debés solicitar las pistas en orden.
+      missing_hint: Este críptico no tiene texto de ayuda; no se consumió la pista.
+      share_unfinished: Solo podés compartir el resultado de una partida terminada.
   activerecord:
     models:
+      game:
+        one: Partida
+        other: Partidas
+      daily_challenge:
+        one: Desafío diario
+        other: Desafíos diarios
+      cryptic:
+        one: Críptico
+        other: Crípticos
       player:
         one: Jugador
         other: Jugadores
     attributes:
+      daily_challenge:
+        date: Fecha
+        cryptic: Críptico
+      game:
+        player: Jugador
+        player_id: Jugador
+        cryptic: Críptico
+        cryptic_id: Críptico
+        daily_challenge: Desafío diario
+        daily_challenge_id: Desafío diario
+        status: Estado
+        attempts_count: Intentos consumidos
+        hints_count: Pistas utilizadas
+        started_at: Inicio
+        finished_at: Finalización
+        points: Puntos
+      cryptic:
+        source_id: Identificador de la fuente
+        clue: Enunciado
+        enumeration: Enumeración
+        answer: Respuesta
+        definitions: Definiciones
+        indicators: Indicadores
+        material: Material
+        puzzle_type: Tipo
+        difficulty: Dificultad
+        hint: Ayuda
+        explanation: Explicación
+        author: Autor
+        active: Activo
       player:
         name: Nombre
         normalized_name: Nombre
@@ -12,3 +92,40 @@ es:
         current_streak: Racha actual
         best_streak: Mejor racha
         last_streak_on: Último día de la racha
+    errors:
+      models:
+        game:
+          attributes:
+            base:
+              inconsistent_state: El estado no coincide con las fechas, los contadores o los puntos de la partida
+            player_id:
+              open_game_exists: ya tiene una partida pendiente o en curso
+            cryptic_id:
+              already_played: ya fue jugado por este jugador
+            cryptic:
+              daily_mismatch: no coincide con el del desafío diario
+            started_at:
+              outside_daily_date: debe pertenecer a la fecha del desafío diario
+            finished_at:
+              before_start: no puede ser anterior al inicio
+              before_expiration: debe ser posterior al día del desafío para registrar su vencimiento
+              outside_daily_date: debe pertenecer a la fecha del desafío diario
+        cryptic:
+          attributes:
+            enumeration:
+              invalid: debe ser un número positivo entre paréntesis, como (6)
+              answer_length_mismatch: "debe indicar %{count} letras, sin contar espacios"
+            definitions:
+              invalid_text_list: debe ser una lista de textos no vacíos
+              double_definition_count: debe contener exactamente dos definiciones para el tipo doble definición
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
+            indicators:
+              invalid_text_list: debe ser una lista de textos no vacíos
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
+            material:
+              invalid_text_list: debe ser una lista de textos no vacíos
+              fragment_missing: 'contiene un fragmento que no aparece textualmente en el enunciado: "%{fragment}"'
+              oculta_mismatch: debe contener la respuesta de forma consecutiva, sin contar espacios ni signos
+              anagrama_mismatch: debe tener exactamente las mismas letras que la respuesta
+              iniciales_mismatch: debe formar la respuesta con las primeras letras de sus palabras, ignorando la palabra "y"
+              finales_mismatch: debe formar la respuesta con las últimas letras de sus palabras, ignorando la palabra "y"

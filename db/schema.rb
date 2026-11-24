@@ -10,7 +10,71 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_11_024630) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_193354) do
+  create_table "cryptics", force: :cascade do |t|
+    t.string "source_id", null: false
+    t.text "clue", null: false
+    t.string "enumeration", null: false
+    t.string "answer", null: false
+    t.json "definitions", null: false
+    t.json "indicators", null: false
+    t.json "material", null: false
+    t.string "puzzle_type", null: false
+    t.string "difficulty", null: false
+    t.text "hint"
+    t.text "explanation"
+    t.string "author"
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["source_id"], name: "index_cryptics_on_source_id", unique: true
+    t.check_constraint "CASE WHEN json_valid(definitions) THEN json_type(definitions) = 'array' ELSE 0 END", name: "cryptics_definitions_array"
+    t.check_constraint "CASE WHEN json_valid(indicators) THEN json_type(indicators) = 'array' ELSE 0 END", name: "cryptics_indicators_array"
+    t.check_constraint "CASE WHEN json_valid(material) THEN json_type(material) = 'array' ELSE 0 END", name: "cryptics_material_array"
+    t.check_constraint "active IN (0, 1)", name: "cryptics_active_boolean"
+    t.check_constraint "difficulty IN ('facil', 'medio', 'avanzado')", name: "cryptics_difficulty_allowed"
+    t.check_constraint "length(trim(answer)) > 0", name: "cryptics_answer_not_empty"
+    t.check_constraint "length(trim(clue)) > 0", name: "cryptics_clue_not_empty"
+    t.check_constraint "length(trim(enumeration)) > 0", name: "cryptics_enumeration_not_empty"
+    t.check_constraint "length(trim(source_id)) > 0", name: "cryptics_source_id_not_empty"
+    t.check_constraint "puzzle_type != 'doble_definicion' OR json_array_length(definitions) = 2", name: "cryptics_double_definition_count"
+    t.check_constraint "puzzle_type IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cryptics_puzzle_type_allowed"
+  end
+
+  create_table "daily_challenges", force: :cascade do |t|
+    t.date "date", null: false
+    t.integer "cryptic_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cryptic_id"], name: "index_daily_challenges_on_cryptic_id", unique: true
+    t.index ["date"], name: "index_daily_challenges_on_date", unique: true
+    t.index ["id", "cryptic_id"], name: "index_daily_challenges_on_id_and_cryptic_id", unique: true
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.integer "player_id", null: false
+    t.integer "cryptic_id", null: false
+    t.integer "daily_challenge_id"
+    t.string "status", default: "pending", null: false
+    t.integer "attempts_count", default: 0, null: false
+    t.integer "hints_count", default: 0, null: false
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cryptic_id"], name: "index_games_on_cryptic_id"
+    t.index ["daily_challenge_id"], name: "index_games_on_daily_challenge_id"
+    t.index ["player_id", "cryptic_id"], name: "index_games_one_started_per_cryptic", unique: true, where: "started_at IS NOT NULL"
+    t.index ["player_id", "daily_challenge_id"], name: "index_games_one_daily_per_player", unique: true, where: "daily_challenge_id IS NOT NULL"
+    t.index ["player_id"], name: "index_games_on_player_id"
+    t.index ["player_id"], name: "index_games_one_open_per_player", unique: true, where: "status IN ('pending', 'in_progress')"
+    t.check_constraint "(status = 'pending' AND started_at IS NULL AND finished_at IS NULL AND points IS NULL AND attempts_count = 0 AND hints_count = 0) OR (status = 'in_progress' AND started_at IS NOT NULL AND finished_at IS NULL AND points IS NULL AND attempts_count < 5) OR (status = 'won' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points >= 10 AND attempts_count >= 1) OR (status = 'lost' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND attempts_count = 5) OR (status = 'surrendered' AND started_at IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND attempts_count < 5) OR (status = 'expired' AND daily_challenge_id IS NOT NULL AND finished_at IS NOT NULL AND points IS NOT NULL AND points = 0 AND (started_at IS NOT NULL OR (attempts_count = 0 AND hints_count = 0)))", name: "games_state_consistency"
+    t.check_constraint "attempts_count BETWEEN 0 AND 5", name: "games_attempts_range"
+    t.check_constraint "hints_count BETWEEN 0 AND 4", name: "games_hints_range"
+    t.check_constraint "started_at IS NULL OR finished_at IS NULL OR finished_at >= started_at", name: "games_timestamp_order"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
     t.string "normalized_name", null: false
@@ -43,8 +107,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_11_024630) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role", default: "editor", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "daily_challenges", "cryptics"
+  add_foreign_key "games", "cryptics"
+  add_foreign_key "games", "daily_challenges", column: ["daily_challenge_id", "cryptic_id"], primary_key: ["id", "cryptic_id"]
+  add_foreign_key "games", "players"
   add_foreign_key "sessions", "users"
 end
