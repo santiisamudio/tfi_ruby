@@ -42,6 +42,9 @@ es:
       share_unfinished: Solo podés compartir el resultado de una partida terminada.
   activerecord:
     models:
+      catalog_sync:
+        one: Sincronización de catálogo
+        other: Sincronizaciones de catálogo
       game:
         one: Partida
         other: Partidas
@@ -55,6 +58,16 @@ es:
         one: Jugador
         other: Jugadores
     attributes:
+      catalog_sync:
+        user: Administrador
+        source_url: URL del catálogo
+        version: Versión
+        status: Resultado
+        created_count: Crípticos creados
+        updated_count: Crípticos actualizados
+        deactivated_count: Crípticos desactivados
+        rejected_count: Crípticos rechazados
+        error_details: Detalles de errores
       daily_challenge:
         date: Fecha
         cryptic: Críptico
@@ -94,6 +107,12 @@ es:
         last_streak_on: Último día de la racha
     errors:
       models:
+        catalog_sync:
+          attributes:
+            user:
+              admin_required: debe tener el rol de administrador
+            error_details:
+              invalid_sync_details: debe ser una lista de errores con source_id (texto o null) y messages (lista de textos no vacíos)
         game:
           attributes:
             base:
