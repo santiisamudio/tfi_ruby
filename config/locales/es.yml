@@ -1,5 +1,13 @@
 es:
   catalog:
+    sync_results:
+      success: Sincronización completada. Revisá los contadores y los posibles rechazos.
+      unchanged: Sin cambios. La versión del catálogo ya estaba sincronizada.
+      failed: La sincronización falló. No se modificaron crípticos; revisá el detalle del error.
+    statuses:
+      success: Completada
+      unchanged: Sin cambios
+      failed: Fallida
     errors:
       invalid_source_url: La URL del catálogo debe ser HTTP o HTTPS, sin credenciales ni fragmentos.
       timeout: La descarga del catálogo superó el tiempo máximo de 10 segundos.

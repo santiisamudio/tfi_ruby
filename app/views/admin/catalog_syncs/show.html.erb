@@ -1,0 +1,36 @@
+<h1>Sincronización #<%= @catalog_sync.id %></h1>
+
+<dl>
+  <dt>Resultado</dt>
+  <dd><%= t("catalog.statuses.#{@catalog_sync.status}") %></dd>
+  <dt>Fecha</dt>
+  <dd><%= @catalog_sync.created_at.strftime("%d/%m/%Y %H:%M:%S") %></dd>
+  <dt>Ejecutor</dt>
+  <dd><%= @catalog_sync.user ? @catalog_sync.user.email_address : "Seeds" %></dd>
+  <dt>Versión</dt>
+  <dd><%= @catalog_sync.version || "No disponible" %></dd>
+  <dt>Creados</dt>
+  <dd><%= @catalog_sync.created_count %></dd>
+  <dt>Actualizados</dt>
+  <dd><%= @catalog_sync.updated_count %></dd>
+  <dt>Desactivados</dt>
+  <dd><%= @catalog_sync.deactivated_count %></dd>
+  <dt>Rechazados</dt>
+  <dd><%= @catalog_sync.rejected_count %></dd>
+</dl>
+
+<h2>Errores y rechazos</h2>
+<% if @catalog_sync.error_details.empty? %>
+  <p>Sin errores registrados.</p>
+<% else %>
+  <% @catalog_sync.error_details.each do |detail| %>
+    <h3 class="h5"><%= detail.fetch("source_id") || "Error general" %></h3>
+    <ul>
+      <% detail.fetch("messages").each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+
+<%= link_to "Volver a sincronización", admin_catalog_syncs_path %>

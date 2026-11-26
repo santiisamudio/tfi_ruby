@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "dashboard#index"
+    resources :catalog_syncs, only: %i[index show create]
   end
   resource :session
   resources :passwords, param: :token
