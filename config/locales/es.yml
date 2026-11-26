@@ -1,5 +1,8 @@
 es:
   catalog:
+    seed_summary: "Creados: %{created}; actualizados: %{updated}; desactivados: %{deactivated}; rechazados: %{rejected}."
+    general_error: Error general
+    seed_failed: No se pudo cargar el catálogo inicial. Revisá los errores de sincronización.
     sync_results:
       success: Sincronización completada. Revisá los contadores y los posibles rechazos.
       unchanged: Sin cambios. La versión del catálogo ya estaba sincronizada.
@@ -17,7 +20,7 @@ es:
       invalid_catalog: El catálogo debe contener version, generado y fuente como textos no vacíos, y cripticos como lista.
       empty_catalog: El catálogo está vacío; no se modificaron crípticos.
       invalid_source_ids: El catálogo contiene entradas sin un ID válido; no se modificaron crípticos.
-      duplicate_source_ids: El catálogo contiene IDs duplicados; no se modificaron crípticos.
+      duplicate_source_id: El ID aparece más de una vez en el catálogo; se rechazaron todas sus entradas.
       invalid_field: "El campo %{field} tiene un formato incorrecto."
   scores:
     errors:

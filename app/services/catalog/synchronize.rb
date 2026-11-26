@@ -39,7 +39,14 @@ class Catalog::Synchronize
       if previous&.version == @sync.version
         @sync.update!(status: "unchanged")
       else
-        entries.each { |entry| import_entry(entry) }
+        id_counts = entries.map { |entry| entry.fetch("id") }.tally
+        entries.each do |entry|
+          if id_counts.fetch(entry.fetch("id")) > 1
+            reject_entry(entry.fetch("id"), [ I18n.t("catalog.errors.duplicate_source_id", raise: true) ])
+          else
+            import_entry(entry)
+          end
+        end
         @sync.deactivated_count = Cryptic.active.where.not(source_id: entries.map { |entry| entry.fetch("id") })
           .update_all(active: false, updated_at: Time.current)
         @sync.update!(status: "success")
@@ -54,10 +61,8 @@ class Catalog::Synchronize
     def identity_error_for(entries)
       return :empty_catalog if entries.empty?
       unless entries.all? { |entry| entry.is_a?(Hash) && entry["id"].is_a?(String) && entry["id"].present? }
-        return :invalid_source_ids
+        :invalid_source_ids
       end
-      ids = entries.map { |entry| entry.fetch("id") }
-      :duplicate_source_ids if ids.uniq.length != ids.length
     end
 
     def import_entry(entry)

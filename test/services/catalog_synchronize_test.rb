@@ -124,8 +124,8 @@ class CatalogSynchronizeTest < ActiveSupport::TestCase
     assert_equal before, Cryptic.order(:id).map(&:attributes)
   end
 
-  test "fails empty catalogs, invalid IDs and duplicates without changing cryptics" do
-    [ [], [ nil ], [ @mate.except("id") ], [ @mate.merge("id" => 1) ], [ @mate, @mate ] ].each do |entries|
+  test "fails empty catalogs and invalid IDs without changing cryptics" do
+    [ [], [ nil ], [ @mate.except("id") ], [ @mate.merge("id" => 1) ] ].each do |entries|
       @catalog["cripticos"] = entries
       before = Cryptic.order(:id).map(&:attributes)
 
@@ -140,6 +140,33 @@ class CatalogSynchronizeTest < ActiveSupport::TestCase
       assert_equal before, Cryptic.order(:id).map(&:attributes)
     end
   end
+
+    test "rejects every duplicate entry while processing other entries and preserving local duplicates" do
+      mate_before = cryptics(:mate).attributes
+      @catalog["cripticos"] = [
+        @mate.merge("autor" => "Primera copia"),
+        @mate.merge("autor" => "Segunda copia"),
+        @mate.merge("id" => "cr-new", "autor" => "Nueva"),
+        @mate.merge("id" => "cr-new", "autor" => "Duplicada"),
+        @camisa.merge("autor" => "Actualizada"),
+        @mate.merge("id" => "cr-invalid", "enumeracion" => "(99)")
+      ]
+
+      result = synchronize
+
+      assert_equal "success", result.status
+      assert_equal 5, result.rejected_count
+      assert_equal 1, result.updated_count
+      assert_equal 0, result.created_count
+      assert_equal 0, result.deactivated_count
+      assert_equal mate_before, cryptics(:mate).reload.attributes
+      assert_not Cryptic.exists?(source_id: "cr-new")
+      assert_equal "Actualizada", cryptics(:camisa).reload.author
+      assert_equal %w[cr-001 cr-001 cr-new cr-new cr-invalid],
+        result.reload.error_details.map { |detail| detail.fetch("source_id") }
+      assert_equal [ I18n.t("catalog.errors.duplicate_source_id") ],
+        result.error_details.first.fetch("messages")
+    end
 
   test "records download failures without changes and permits retrying that version" do
     before = Cryptic.order(:id).map(&:attributes)

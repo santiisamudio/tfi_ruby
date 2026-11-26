@@ -4,6 +4,7 @@ require "timeout"
 
 class Catalog::Download
   DEFAULT_SOURCE_URL = "https://ecorrons.github.io/cryptics-api/v1/cryptics.json".freeze
+  #DEFAULT_SOURCE_URL = "https://ecorrons.github.io/cryptics-api/v1/cryptics_with_errors.json".freeze
   TIMEOUT_SECONDS = 10
 
   class Error < StandardError
