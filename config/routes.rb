@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       post :start
       post :hint
       post :surrender
+      post :attempt
       get :share
     end
   end

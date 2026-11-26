@@ -41,6 +41,13 @@ class GamesController < ApplicationController
     render json: Games::PublicState.call(game)
   end
 
+  def attempt
+    game = Games::Attempt.call(
+      player: current_player, game_id: params[:id], answer: params.expect(:answer)
+    )
+    render json: Games::PublicState.call(game)
+  end
+
   def share
     Games::DailyExpiration.call(player: current_player)
     game = current_player.games.find(params[:id])

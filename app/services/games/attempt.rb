@@ -1,5 +1,8 @@
 class Games::Attempt
-  def self.call(player:, game_id:, answer:, type_points:, difficulty_multiplier:)
+  TEMPORARY_TYPE_POINTS = 100
+  TEMPORARY_MULTIPLIERS = { "facil" => 1, "medio" => 1.25, "avanzado" => 1.50 }.freeze
+
+  def self.call(player:, game_id:, answer:, type_points: TEMPORARY_TYPE_POINTS, difficulty_multiplier: nil)
     Games::DailyExpiration.call(player: player)
 
     player.with_lock do
@@ -20,9 +23,10 @@ class Games::Attempt
       if normalized_answer == AnswerNormalizer.call(game.cryptic.answer)
         finished_at = Time.current
         streak = StreakUpdater.call(player: player, today: finished_at.to_date)
+        multiplier = difficulty_multiplier.nil? ? TEMPORARY_MULTIPLIERS.fetch(game.cryptic.difficulty) : difficulty_multiplier
         points = ScoreCalculator.call(
           type_points: type_points,
-          difficulty_multiplier: difficulty_multiplier,
+          difficulty_multiplier: multiplier,
           difficulty: game.cryptic.difficulty,
           duration_seconds: finished_at - game.started_at,
           hints_count: game.hints_count,
