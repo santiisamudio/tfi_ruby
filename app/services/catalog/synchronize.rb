@@ -34,22 +34,30 @@ class Catalog::Synchronize
     CatalogSync.transaction do
       # Take the database write lock before checking the last version or changing cryptics.
       @sync.save!
-      previous = CatalogSync.where(source_url: @sync.source_url, status: "success")
+      previous = CatalogSync.where(status: "success")
         .order(created_at: :desc, id: :desc).first
-      if previous&.version == @sync.version
+      if previous&.source_url == @sync.source_url && previous.version == @sync.version
         @sync.update!(status: "unchanged")
       else
         id_counts = entries.map { |entry| entry.fetch("id") }.tally
+        valid_count = 0
         entries.each do |entry|
           if id_counts.fetch(entry.fetch("id")) > 1
             reject_entry(entry.fetch("id"), [ I18n.t("catalog.errors.duplicate_source_id", raise: true) ])
           else
-            import_entry(entry)
+            valid_count += 1 if import_entry(entry)
           end
         end
-        @sync.deactivated_count = Cryptic.active.where.not(source_id: entries.map { |entry| entry.fetch("id") })
-          .update_all(active: false, updated_at: Time.current)
-        @sync.update!(status: "success")
+        if valid_count.zero?
+          @sync.error_details << {
+            "source_id" => nil, "messages" => [ I18n.t("catalog.errors.no_valid_cryptics", raise: true) ]
+          }
+          @sync.save!
+        else
+          @sync.deactivated_count = Cryptic.active.where.not(source_id: entries.map { |entry| entry.fetch("id") })
+            .update_all(active: false, updated_at: Time.current)
+          @sync.update!(status: "success")
+        end
       end
     end
     @sync
@@ -80,11 +88,12 @@ class Catalog::Synchronize
         reject_entry(entry.fetch("id"), cryptic.errors.full_messages)
         return
       end
-      return unless cryptic.has_changes_to_save?
+      return true unless cryptic.has_changes_to_save?
 
       counter = cryptic.new_record? ? :created_count : :updated_count
       cryptic.save!
       @sync[counter] += 1
+      true
     end
 
     def valid_field_format?(field, value)

@@ -78,9 +78,13 @@ class Admin::CatalogSyncsControllerTest < ActionDispatch::IntegrationTest
 
   test "runs synchronization with current admin and server URL not supplied parameters" do
     sign_in_as(@admin)
+    mate = cryptics(:mate)
+    valid_entry = { "id" => mate.source_id }.merge(
+      Catalog::Synchronize::FIELD_MAPPING.to_h { |source, target| [ source, mate.public_send(target) ] }
+    )
     catalog = {
       "version" => "v2", "generado" => "2026-11-26", "fuente" => "Prueba",
-      "cripticos" => [ { "id" => "cr-rejected" } ]
+      "cripticos" => [ valid_entry, { "id" => "cr-rejected" } ]
     }
     download = ->(source_url:) {
       assert_equal Catalog::Download::DEFAULT_SOURCE_URL, source_url

@@ -19,6 +19,7 @@ es:
       invalid_json: El servidor no devolvió un JSON válido.
       invalid_catalog: El catálogo debe contener version, generado y fuente como textos no vacíos, y cripticos como lista.
       empty_catalog: El catálogo está vacío; no se modificaron crípticos.
+      no_valid_cryptics: Todas las entradas fueron rechazadas; se conservó el catálogo local sin desactivar crípticos.
       invalid_source_ids: El catálogo contiene entradas sin un ID válido; no se modificaron crípticos.
       duplicate_source_id: El ID aparece más de una vez en el catálogo; se rechazaron todas sus entradas.
       invalid_field: "El campo %{field} tiene un formato incorrecto."

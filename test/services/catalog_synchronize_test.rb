@@ -124,6 +124,22 @@ class CatalogSynchronizeTest < ActiveSupport::TestCase
     assert_equal before, Cryptic.order(:id).map(&:attributes)
   end
 
+  test "returning to a previous source reapplies its catalog after another source changed it" do
+    synchronize
+    other_url = "https://other.example.com/catalog.json"
+    other_catalog = @catalog.merge("cripticos" => [ @mate ])
+    Catalog::Download.stub(:call, other_catalog) do
+      Catalog::Synchronize.call(source_url: other_url)
+    end
+    assert_not cryptics(:camisa).reload.active?
+
+    result = synchronize
+
+    assert_equal "success", result.status
+    assert_equal 1, result.updated_count
+    assert cryptics(:camisa).reload.active?
+  end
+
   test "fails empty catalogs and invalid IDs without changing cryptics" do
     [ [], [ nil ], [ @mate.except("id") ], [ @mate.merge("id" => 1) ] ].each do |entries|
       @catalog["cripticos"] = entries
@@ -167,6 +183,23 @@ class CatalogSynchronizeTest < ActiveSupport::TestCase
       assert_equal [ I18n.t("catalog.errors.duplicate_source_id") ],
         result.error_details.first.fetch("messages")
     end
+
+  test "all rejected entries fail without deactivating local catalog and allow retry" do
+    @catalog["cripticos"] = [ @mate.merge("id" => "cr-invalid", "enumeracion" => "(99)") ]
+    before = Cryptic.order(:id).map(&:attributes)
+
+    result = synchronize
+
+    assert_equal "failed", result.status
+    assert_equal 1, result.rejected_count
+    assert_equal 0, result.deactivated_count
+    assert_equal before, Cryptic.order(:id).map(&:attributes)
+    assert_nil result.error_details.last.fetch("source_id")
+    assert_equal [ I18n.t("catalog.errors.no_valid_cryptics") ], result.error_details.last.fetch("messages")
+
+    @catalog["cripticos"] = [ @mate, @camisa ]
+    assert_equal "success", synchronize.status
+  end
 
   test "records download failures without changes and permits retrying that version" do
     before = Cryptic.order(:id).map(&:attributes)

@@ -35,9 +35,13 @@ class CatalogSeedsTest < ActiveSupport::TestCase
   end
 
   test "prints individual rejections without failing the valid import" do
+    mate = cryptics(:mate)
+    valid_entry = { "id" => mate.source_id }.merge(
+      Catalog::Synchronize::FIELD_MAPPING.to_h { |source, target| [ source, mate.public_send(target) ] }
+    )
     catalog = {
       "version" => "seed-v1", "generado" => "2026-11-26", "fuente" => "Prueba",
-      "cripticos" => [ { "id" => "cr-invalid" } ]
+      "cripticos" => [ valid_entry, { "id" => "cr-invalid" } ]
     }
     Catalog::Download.stub(:call, catalog) do
       output, errors = capture_io { load Rails.root.join("db", "seeds.rb") }
