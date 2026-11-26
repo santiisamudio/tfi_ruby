@@ -1,4 +1,12 @@
 es:
+  catalog:
+    errors:
+      invalid_source_url: La URL del catálogo debe ser HTTP o HTTPS, sin credenciales ni fragmentos.
+      timeout: La descarga del catálogo superó el tiempo máximo de 10 segundos.
+      network_error: No se pudo descargar el catálogo por un error de conexión.
+      http_error: "El servidor del catálogo respondió con HTTP %{status}."
+      invalid_json: El servidor no devolvió un JSON válido.
+      invalid_catalog: El catálogo debe contener version, generado y fuente como textos no vacíos, y cripticos como lista.
   scores:
     errors:
       type_points: Los puntos del tipo deben ser un entero entre 10 y 1000.
