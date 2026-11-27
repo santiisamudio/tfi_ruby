@@ -1,4 +1,28 @@
 es:
+  catalog:
+    seed_summary: "Creados: %{created}; actualizados: %{updated}; desactivados: %{deactivated}; rechazados: %{rejected}."
+    general_error: Error general
+    seed_failed: No se pudo cargar el catálogo inicial. Revisá los errores de sincronización.
+    sync_results:
+      success: Sincronización completada. Revisá los contadores y los posibles rechazos.
+      unchanged: Sin cambios. La versión del catálogo ya estaba sincronizada.
+      failed: La sincronización falló. No se modificaron crípticos; revisá el detalle del error.
+    statuses:
+      success: Completada
+      unchanged: Sin cambios
+      failed: Fallida
+    errors:
+      invalid_source_url: La URL del catálogo debe ser HTTP o HTTPS, sin credenciales ni fragmentos.
+      timeout: La descarga del catálogo superó el tiempo máximo de 10 segundos.
+      network_error: No se pudo descargar el catálogo por un error de conexión.
+      http_error: "El servidor del catálogo respondió con HTTP %{status}."
+      invalid_json: El servidor no devolvió un JSON válido.
+      invalid_catalog: El catálogo debe contener version, generado y fuente como textos no vacíos, y cripticos como lista.
+      empty_catalog: El catálogo está vacío; no se modificaron crípticos.
+      no_valid_cryptics: Todas las entradas fueron rechazadas; se conservó el catálogo local sin desactivar crípticos.
+      invalid_source_ids: El catálogo contiene entradas sin un ID válido; no se modificaron crípticos.
+      duplicate_source_id: El ID aparece más de una vez en el catálogo; se rechazaron todas sus entradas.
+      invalid_field: "El campo %{field} tiene un formato incorrecto."
   scores:
     errors:
       type_points: Los puntos del tipo deben ser un entero entre 10 y 1000.
@@ -42,6 +66,9 @@ es:
       share_unfinished: Solo podés compartir el resultado de una partida terminada.
   activerecord:
     models:
+      catalog_sync:
+        one: Sincronización de catálogo
+        other: Sincronizaciones de catálogo
       game:
         one: Partida
         other: Partidas
@@ -55,6 +82,16 @@ es:
         one: Jugador
         other: Jugadores
     attributes:
+      catalog_sync:
+        user: Administrador
+        source_url: URL del catálogo
+        version: Versión
+        status: Resultado
+        created_count: Crípticos creados
+        updated_count: Crípticos actualizados
+        deactivated_count: Crípticos desactivados
+        rejected_count: Crípticos rechazados
+        error_details: Detalles de errores
       daily_challenge:
         date: Fecha
         cryptic: Críptico
@@ -94,6 +131,12 @@ es:
         last_streak_on: Último día de la racha
     errors:
       models:
+        catalog_sync:
+          attributes:
+            user:
+              admin_required: debe tener el rol de administrador
+            error_details:
+              invalid_sync_details: debe ser una lista de errores con source_id (texto o null) y messages (lista de textos no vacíos)
         game:
           attributes:
             base:

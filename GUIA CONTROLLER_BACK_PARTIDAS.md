@@ -93,6 +93,23 @@ Solo admite partidas terminadas.
 intentos, cantidad de pistas y tiempo si hubo inicio. En diarios incluye la fecha.
 No revela enunciado ni solución y no envía mensajes automáticamente.
 
+## POST /games/:id/attempt
+
+**Para que sirve:** enviar una respuesta para validarla en el servidor.
+
+**Recibe:** `{"answer":"mi respuesta"}`.
+
+**Devuelve:** el estado completo de partida. Si es incorrecta, sigue
+`in_progress` sin revelar la solucion; al quinto fallo queda `lost` con 0 puntos.
+Si acierta, queda `won`, con puntos, respuesta y explicacion. Una respuesta
+sin letras no consume intentos. Repetir una solicitud sobre una partida
+terminada conserva su resultado; repetir un intento incorrecto en curso consume
+otro intento.
+
+Los valores temporales del servidor son 100 puntos por tipo y multiplicadores
+facil 1, medio 1.25, avanzado 1.50. Siguen aplicandose tiempo, pistas, racha
+y bonus diario. No enviar configuracion de puntaje desde el frontend.
+
 ## Errores y pendiente
 
 Los errores controlados devuelven:
@@ -110,5 +127,5 @@ HTTP: 400 para parámetros incorrectos, 401 sin jugador, 403 si está bloqueado,
 404 si la partida no existe o es ajena, y 422 para reglas de juego o CSRF inválido.
 Los POST requieren el token CSRF de Rails.
 
-**Todavía no existe un endpoint para enviar respuestas:** falta conectar la
-configuración de puntaje con administración.
+**Pendiente:** reemplazar los valores temporales de puntaje por la configuracion
+de administracion.

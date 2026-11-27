@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "dashboard#index"
+    resources :catalog_syncs, only: %i[index show create]
   end
   resource :session
   resources :passwords, param: :token
@@ -17,6 +18,7 @@ Rails.application.routes.draw do
       post :start
       post :hint
       post :surrender
+      post :attempt
       get :share
     end
   end

@@ -4,6 +4,7 @@
 
 <% if Current.user.admin? %>
   <p>Rol: Administrador</p>
+  <%= link_to "Sincronización de catálogo", admin_catalog_syncs_path, class: "btn btn-primary" %>
 <% else %>
   <p>Rol: Editor de puntajes</p>
 <% end %>

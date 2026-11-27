@@ -10,7 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_22_193354) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_26_215000) do
+  create_table "catalog_syncs", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "source_url", null: false
+    t.string "version"
+    t.string "status", null: false
+    t.integer "created_count", default: 0, null: false
+    t.integer "updated_count", default: 0, null: false
+    t.integer "deactivated_count", default: 0, null: false
+    t.integer "rejected_count", default: 0, null: false
+    t.json "error_details", default: [], null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_catalog_syncs_on_user_id"
+    t.check_constraint "CASE WHEN json_valid(error_details) THEN json_type(error_details) = 'array' ELSE 0 END", name: "catalog_syncs_error_details_array"
+    t.check_constraint "created_count >= 0", name: "catalog_syncs_created_count_not_negative"
+    t.check_constraint "deactivated_count >= 0", name: "catalog_syncs_deactivated_count_not_negative"
+    t.check_constraint "length(trim(source_url)) > 0", name: "catalog_syncs_source_url_not_empty"
+    t.check_constraint "rejected_count >= 0", name: "catalog_syncs_rejected_count_not_negative"
+    t.check_constraint "status = 'failed' OR (version IS NOT NULL AND length(trim(version)) > 0)", name: "catalog_syncs_completed_version"
+    t.check_constraint "status IN ('success', 'unchanged', 'failed')", name: "catalog_syncs_status_allowed"
+    t.check_constraint "updated_count >= 0", name: "catalog_syncs_updated_count_not_negative"
+  end
+
   create_table "cryptics", force: :cascade do |t|
     t.string "source_id", null: false
     t.text "clue", null: false
@@ -111,6 +134,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_193354) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "catalog_syncs", "users"
   add_foreign_key "daily_challenges", "cryptics"
   add_foreign_key "games", "cryptics"
   add_foreign_key "games", "daily_challenges", column: ["daily_challenge_id", "cryptic_id"], primary_key: ["id", "cryptic_id"]

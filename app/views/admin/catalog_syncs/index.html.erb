@@ -1,0 +1,37 @@
+<h1>Sincronización de catálogo</h1>
+
+
+<%= button_to "Sincronizar catálogo", admin_catalog_syncs_path, class: "btn btn-primary mb-4",
+      data: { turbo_submits_with: "Sincronizando..." } %>
+
+<h2>Últimas 20 ejecuciones</h2>
+<% if @catalog_syncs.empty? %>
+  <p>Todavía no se realizaron sincronizaciones.</p>
+<% else %>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Fecha</th>
+          <th scope="col">Ejecutor</th>
+          <th scope="col">Versión</th>
+          <th scope="col">Resultado</th>
+          <th scope="col">Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @catalog_syncs.each do |sync| %>
+          <tr>
+            <td><%= sync.created_at.strftime("%d/%m/%Y %H:%M:%S") %></td>
+            <td><%= sync.user ? sync.user.email_address : "Seeds" %></td>
+            <td><%= sync.version || "No disponible" %></td>
+            <td><%= t("catalog.statuses.#{sync.status}") %></td>
+            <td><%= link_to "Ver ejecución ##{sync.id}", admin_catalog_sync_path(sync) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<%= link_to "Volver al panel", admin_root_path %>
