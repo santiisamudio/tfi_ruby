@@ -64,6 +64,13 @@ es:
       hint_out_of_order: Debés solicitar las pistas en orden.
       missing_hint: Este críptico no tiene texto de ayuda; no se consumió la pista.
       share_unfinished: Solo podés compartir el resultado de una partida terminada.
+  views:
+    pagination:
+      first: Primera
+      previous: Anterior
+      next: Siguiente
+      last: Última
+      truncate: "…"
   activerecord:
     models:
       catalog_sync:

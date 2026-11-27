@@ -18,7 +18,7 @@ module PlayerIdentification
     def require_player
       if current_player.nil?
         session[:return_to_after_choosing_name] = request.url if request.get?
-        redirect_to new_player_path, flash: { name_required: true }
+        redirect_to new_player_path
       elsif current_player.blocked?
         redirect_to edit_player_path, alert: "Tu nombre está bloqueado: con este jugador no podés seguir jugando."
       end

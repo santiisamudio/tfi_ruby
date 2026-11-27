@@ -44,15 +44,20 @@
   border-bottom: 4px solid transparent;
   color: var(--pm-ink);
   font-weight: 700;
+  text-decoration: none;
 }
 
 .player-module .tabs__item--active {
   border-bottom-color: var(--pm-ruby);
 }
 
-.player-module .tabs__item--disabled {
-  color: var(--pm-graphite);
-  font-weight: 400;
+.player-module .pagination {
+  --bs-pagination-color: var(--pm-ruby);
+  --bs-pagination-hover-color: var(--pm-ruby-deep);
+  --bs-pagination-focus-color: var(--pm-ruby-deep);
+  --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(163, 17, 46, 0.25);
+  --bs-pagination-active-bg: var(--pm-ruby);
+  --bs-pagination-active-border-color: var(--pm-ruby);
 }
 
 .player-module .leaderboard {

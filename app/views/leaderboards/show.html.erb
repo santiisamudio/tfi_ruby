@@ -4,13 +4,44 @@
   <h1>Tabla de posiciones</h1>
 
   <ul class="tabs">
-    <li><span class="tabs__item tabs__item--disabled" aria-disabled="true">Esta semana</span></li>
-    <li><span class="tabs__item tabs__item--disabled" aria-disabled="true">Histórico</span></li>
-    <li><span class="tabs__item tabs__item--active" aria-current="page">Mejores rachas</span></li>
+    <li>
+      <%= link_to "Esta semana", leaderboard_path(tab: "week", difficulty: @difficulty),
+            class: [ "tabs__item", ("tabs__item--active" if @tab == "week") ],
+            aria: { current: ("page" if @tab == "week") } %>
+    </li>
+    <li>
+      <%= link_to "Histórico", leaderboard_path(tab: "all_time", difficulty: @difficulty),
+            class: [ "tabs__item", ("tabs__item--active" if @tab == "all_time") ],
+            aria: { current: ("page" if @tab == "all_time") } %>
+    </li>
+    <li>
+      <%= link_to "Mejores rachas", leaderboard_path(tab: "streaks", difficulty: @difficulty),
+            class: [ "tabs__item", ("tabs__item--active" if @tab == "streaks") ],
+            aria: { current: ("page" if @tab == "streaks") } %>
+    </li>
   </ul>
 
-  <% if @players.empty? %>
-    <p class="mt-4">Nadie tiene una racha activa todavía.</p>
+  <% if @tab != "streaks" %>
+    <div class="btn-group mt-3" role="group" aria-label="Filtrar por dificultad">
+      <%= link_to "Todas", leaderboard_path(tab: @tab),
+            class: [ "btn btn-sm", @difficulty.nil? ? "btn-primary" : "btn-outline-secondary" ] %>
+      <%= link_to "Fácil", leaderboard_path(tab: @tab, difficulty: "facil"),
+            class: [ "btn btn-sm", @difficulty == "facil" ? "btn-primary" : "btn-outline-secondary" ] %>
+      <%= link_to "Medio", leaderboard_path(tab: @tab, difficulty: "medio"),
+            class: [ "btn btn-sm", @difficulty == "medio" ? "btn-primary" : "btn-outline-secondary" ] %>
+      <%= link_to "Avanzado", leaderboard_path(tab: @tab, difficulty: "avanzado"),
+            class: [ "btn btn-sm", @difficulty == "avanzado" ? "btn-primary" : "btn-outline-secondary" ] %>
+    </div>
+  <% end %>
+
+  <% if @page.total_count == 0 %>
+    <% if @tab == "week" %>
+      <p class="mt-4">Nadie resolvió un críptico<%= " de esa dificultad" if @difficulty %> esta semana.</p>
+    <% elsif @tab == "all_time" %>
+      <p class="mt-4">Nadie resolvió un críptico<%= " de esa dificultad" if @difficulty %> todavía.</p>
+    <% else %>
+      <p class="mt-4">Nadie tiene una racha activa todavía.</p>
+    <% end %>
   <% else %>
     <div class="table-responsive">
       <table class="table leaderboard align-middle">
@@ -27,18 +58,18 @@
           </tr>
         </thead>
         <tbody>
-          <% @players.each_with_index do |player, index| %>
-            <%= render "leaderboards/row", player: player, position: index + 1 %>
+          <% @scores.each_with_index do |score, index| %>
+            <%= render "leaderboards/row", score: score, position: @page.offset_value + index + 1 %>
           <% end %>
         </tbody>
-        <% if @current_player_position && !@players.include?(current_player) %>
+        <% if @current_player_score %>
           <tfoot>
-            <%= render "leaderboards/row", player: current_player, position: @current_player_position %>
+            <%= render "leaderboards/row", score: @current_player_score, position: @current_player_position %>
           </tfoot>
         <% end %>
       </table>
     </div>
 
-    
+    <%= paginate @page, window: 2 %>
   <% end %>
 </div>

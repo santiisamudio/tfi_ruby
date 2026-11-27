@@ -76,6 +76,10 @@ class Player < ApplicationRecord
     end
   end
 
+  def all_time_score
+    PlayerScore.new(self, games.where(status: "won").to_a)
+  end
+
   private
     def normalize_name
       if name

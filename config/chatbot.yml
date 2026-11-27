@@ -36,15 +36,7 @@ parts:
     El <span class="mark-indicator">indicador</span> dice qué operación hacer: «metido en» avisa que algo va dentro de otra cosa. El <mark class="mark-material">material</mark> son las piezas sobre las que se opera: «el sur» y «el canto del pollito».
 
     «Da» es una palabra de unión: solo conecta las partes. El número entre paréntesis es la enumeración: cuántas letras tiene la respuesta, sin contar las tildes.
-  options: [parts_answer, how_to_solve]
-
-parts_answer:
-  prompt: ¿Cuál es la respuesta?
-  message: |
-    PISO. El sur vale S y el canto del pollito es PÍO: la S metida en PÍO da PI<strong>S</strong>O.
-
-    Y además PISO es el suelo, y tiene 4 letras. Cuando las dos lecturas llevan a la misma palabra, la respuesta es segura.
-  options: [how_to_solve, types]
+  options: [how_to_solve]
 
 how_to_solve:
   prompt: ¿Cómo lo resuelvo?
@@ -60,7 +52,7 @@ how_to_solve:
 
 types:
   prompt: Mostrame los tipos de juego de palabras
-  message: Hay trece. Elegí uno y te cuento cómo funciona y qué palabras suelen avisarlo.
+  message: Hay trece. Elegí uno y te cuento en qué consiste.
   options:
     - anagrama
     - oculta
@@ -79,43 +71,43 @@ types:
 anagrama:
   prompt: Anagrama
   message: |
-    Se reordenan las letras del material. Los indicadores típicos son «loco», «revuelto», «desordenado», «alborotado» o «roto».
+    Se reordenan las letras del material.
   options: [oculta, types]
 
 oculta:
   prompt: Oculta
   message: |
-    La respuesta está escrita de corrido dentro del material. Los indicadores típicos son «esconde», «oculta», «guarda» o «en parte».
+    La respuesta está escrita de corrido dentro del material.
   options: [charada, types]
 
 charada:
   prompt: Charada
   message: |
-    Se pegan piezas una detrás de otra. Los indicadores típicos son «con», «y», «más» o «junto a», aunque a veces no hay ninguno.
+    Se pegan piezas una detrás de otra.
   options: [contenedor, types]
 
 contenedor:
   prompt: Contenedor
   message: |
-    Una pieza va dentro de otra. Los indicadores típicos son «dentro de», «metido en», «abraza», «rodea» o «traga».
-  options: [parts_answer, inversion, types]
+    Una pieza va dentro de otra.
+  options: [inversion, types]
 
 inversion:
   prompt: Inversión
   message: |
-    El material se lee al revés. Los indicadores típicos son «al revés», «de vuelta», «que vuelve» o «para atrás».
+    El material se lee al revés.
   options: [supresion, types]
 
 supresion:
   prompt: Supresión
   message: |
-    Se quita una letra del principio, del final o del medio. Los indicadores típicos son «sin cabeza», «descabezado», «sin cola» o «sin corazón».
+    Se quita una letra del principio, del final o del medio.
   options: [homofono, types]
 
 homofono:
   prompt: Homófono
   message: |
-    Una palabra que suena igual a otra: la h muda, la b y la v, la s, la c y la z, la ll y la y. Los indicadores típicos son «se oye», «suena» o «de oído».
+    Una palabra que suena igual a otra.
   options: [doble_definicion, types]
 
 doble_definicion:
@@ -127,33 +119,31 @@ doble_definicion:
 iniciales:
   prompt: Iniciales
   message: |
-    La respuesta se forma con las primeras letras de palabras seguidas. Los indicadores típicos son «al principio» o «cabezas de».
+    La respuesta se forma con las primeras letras de palabras seguidas.
   options: [finales, types]
 
 finales:
   prompt: Finales
   message: |
-    La respuesta se forma con las últimas letras de palabras seguidas. Los indicadores típicos son «colas de» o «finales de».
+    La respuesta se forma con las últimas letras de palabras seguidas.
   options: [sustitucion, types]
 
 sustitucion:
   prompt: Sustitución
   message: |
-    Se cambia una letra por otra. Los indicadores típicos son «con otra cabeza» o «con otro final».
+    Se cambia una letra por otra.
   options: [simbolos, types]
 
 simbolos:
   prompt: Símbolos
   message: |
-    Se usan abreviaturas convencionales: números romanos, puntos cardinales, elementos químicos o notas musicales. El indicador depende del símbolo.
-
-    En castellano, «uno» puede valer I, y norte, sur, este y oeste valen N, S, E y O. Por eso, en el ejemplo de siempre, «el sur» vale S.
+    Se usan abreviaturas convencionales: números romanos, puntos cardinales, elementos químicos o notas musicales.
   options: [combinada, types]
 
 combinada:
   prompt: Combinada
   message: |
-    Mezcla dos o más operaciones en el mismo enunciado, cada una con su indicador.
+    Mezcla dos o más operaciones en el mismo enunciado.
   options: [game, types]
 
 game:
