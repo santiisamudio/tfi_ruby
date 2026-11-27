@@ -69,3 +69,4 @@ group :test do
 end
 
 gem "rails-i18n", "~> 8.1"
+gem "kaminari", "~> 1.2"

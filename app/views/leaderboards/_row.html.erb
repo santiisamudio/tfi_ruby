@@ -1,3 +1,4 @@
+<% player = score.player %>
 <tr class="<%= "is-current" if player == current_player %>">
   <td class="position">
     <% medal = medal_for(position) %>
@@ -8,11 +9,16 @@
     <% end %>
   </td>
   <td><%= player.name %></td>
-  <%= render "leaderboards/no_data" %>
-  <%= render "leaderboards/no_data" %>
-  <%= render "leaderboards/no_data" %>
-  <%= render "leaderboards/no_data" %>
-  <td><%= days_count(player.current_streak) %></td>
+  <td><%= score.points %></td>
+  <td><%= score.solved_count %></td>
+  <% if score.average_seconds %>
+    <td><%= duration_text(score.average_seconds) %></td>
+    <td><%= score.without_hints_percentage %> %</td>
+  <% else %>
+    <%= render "leaderboards/no_data" %>
+    <%= render "leaderboards/no_data" %>
+  <% end %>
+  <td><%= days_count(player.active_streak) %></td>
   <td>
     <% if player.best_streak > 0 %>
       <span class="tile tile--badge" title="Racha más alta: <%= days_count(player.best_streak) %>">

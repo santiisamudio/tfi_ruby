@@ -18,6 +18,9 @@ class PlayersController < ApplicationController
     else
       render :new, status: :unprocessable_content
     end
+  rescue ActiveRecord::RecordNotUnique
+    @player.errors.add(:normalized_name, :taken)
+    render :new, status: :unprocessable_content
   end
 
   def edit
@@ -29,6 +32,9 @@ class PlayersController < ApplicationController
     else
       render :edit, status: :unprocessable_content
     end
+  rescue ActiveRecord::RecordNotUnique
+    @player.errors.add(:normalized_name, :taken)
+    render :edit, status: :unprocessable_content
   end
 
   def destroy
